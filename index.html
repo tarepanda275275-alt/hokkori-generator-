@@ -279,7 +279,7 @@ let generatedCaption = '';
 
 function renderEpisodes() {
   document.getElementById('episodesList').innerHTML = EPISODES.map(ep => `
-    <div class="episode-card ${selectedIds.has(ep.id)?'selected':''}" onclick="toggleEp(${ep.id})">
+    <div class="episode-card ${selectedIds.has(String(ep.id))?'selected':''}" onclick="toggleEp(this.dataset.id)" data-id="${ep.id}">
       <div class="ep-check">${selectedIds.has(ep.id)?'✓':''}</div>
       <div class="ep-content">
         <div class="ep-meta">
@@ -293,7 +293,8 @@ function renderEpisodes() {
 }
 
 function toggleEp(id) {
-  selectedIds.has(id) ? selectedIds.delete(id) : selectedIds.add(id);
+  const sid = String(id);
+  selectedIds.has(sid) ? selectedIds.delete(sid) : selectedIds.add(sid);
   updateUI();
   renderEpisodes();
 }
@@ -378,7 +379,7 @@ async function fetchWithRetry(url, options, retries=3) {
 }
 
 async function generate(type) {
-  const selected = EPISODES.filter(ep => selectedIds.has(ep.id));
+  const selected = EPISODES.filter(ep => selectedIds.has(String(ep.id)));
   if (!selected.length) return;
 
   document.getElementById('outputSection').className = 'output-section visible';
@@ -609,6 +610,8 @@ async function loadEpisodes() {
     }
     const sample = rows[0];
     console.log('カラム一覧:', Object.keys(sample));
+    console.log('サンプルデータ:', JSON.stringify(sample, null, 2));
+    alert('カラム一覧: ' + Object.keys(sample).join(', '));
     const textKey = ['episode', 'content', 'text', 'body', 'memo', 'note', 'description']
       .find(k => sample[k] !== undefined)
       || Object.keys(sample).find(k => typeof sample[k] === 'string' && (sample[k] || '').length > 10)

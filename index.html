@@ -477,18 +477,19 @@ function switchOut(tab) {
   document.getElementById('newspaperOutput').style.display = tab==='newspaper'?'block':'none';
 }
 
-async function fetchWithRetry(url, options, retries=3) {
+async function fetchWithRetry(url, options, retries=3, loadingElemId='genLoadingText') {
   for (let i=0; i<retries; i++) {
     const res = await fetch(url, options);
     if (res.status === 429) {
-      const wait = (i+1) * 8000;
-      document.getElementById('genLoadingText').textContent = '制限中... ' + (wait/1000) + '秒後に再試行';
+      const wait = (i+1) * 10000;
+      const el = document.getElementById(loadingElemId);
+      if (el) el.textContent = '制限中... ' + (wait/1000) + '秒後に再試行 (' + (i+1) + '/' + retries + ')';
       await new Promise(r => setTimeout(r, wait));
       continue;
     }
     return res;
   }
-  throw new Error('リクエスト制限が続いています');
+  throw new Error('リクエスト制限が続いています。少し待ってから再試行してください。');
 }
 
 async function generate(type) {
@@ -512,10 +513,10 @@ JSON形式のみ：{"card":"テキスト","caption":"文章"}
 エピソード:${ep.episode}
 ${ep.achievement?'よかったこと:'+ep.achievement:''}`;
 
-      const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
+      const res = await fetchWithRetry('/api/generate', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800, messages:[{role:'user',content:prompt}] })
-      });
+      }, 3, 'genLoadingText');
       if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
       const match = data.content[0].text.match(/\{[\s\S]*\}/);
@@ -528,15 +529,29 @@ ${ep.achievement?'よかったこと:'+ep.achievement:''}`;
       const texts = selected.map((e,i) =>
         `エピソード${i+1}（${e.store} / ${e.date||''} / ${e.staff||''}）:\n${e.episode}${e.achievement?'\nよかった:'+e.achievement:''}`
       ).join('\n\n');
-      const prompt = `つなぐ珈琲の編集者です。「ほっこり通信」を作成してください。
-ルール：ですます調／個人特定情報なし／情景と感情を含む／メイン130〜160字／サブ55〜75字
-JSON形式のみ：{"main":{"title":"20字以内","body":"本文","store":"店舗と日付"},"subs":[{"title":"","body":"","store":""}]}
+      const prompt = `あなたはつなぐ珈琲（秋田県の住所非公開コーヒースタンド）の編集者です。
+スタッフが書いたエピソードから「ほっこり通信」の記事を作成してください。
+
+【個人情報の扱い】
+- 人名（スタッフ名・お客様の名前・サブスク会員名など）は必ず削除
+- 年齢・性別の明示的な記述は削除
+- 個人を特定できる情報はすべて削除または一般化する
+- 情景・状況・感情は残してよい
+
+【文章ルール】
+- ですます調
+- メイン記事：最も印象的なエピソードを130〜160文字で小説風に
+- サブ記事：残りのエピソードを各55〜75文字で
+- 情景が浮かぶ描写とスタッフの感情を含める
+
+JSON形式のみ返す：{"main":{"title":"20字以内のタイトル","body":"本文","store":"店舗と日付"},"subs":[{"title":"タイトル","body":"本文","store":"店舗と日付"}]}
+
 ${texts}`;
 
-      const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
+      const res = await fetchWithRetry('/api/generate', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1200, messages:[{role:'user',content:prompt}] })
-      });
+      }, 3, 'genLoadingText');
       if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
       const match = data.content[0].text.match(/\{[\s\S]*\}/);
@@ -688,12 +703,16 @@ ${eps}`
   document.getElementById('analysisLoadingText').textContent = loadingTexts[type];
 
   try {
-    const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
+    const res = await fetchWithRetry('/api/generate', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompts[type]}] })
-    });
-    if (!res.ok) throw new Error('API error: ' + res.status);
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1200, messages:[{role:'user',content:prompts[type]}] })
+    }, 3, 'analysisLoadingText');
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error('API error: ' + res.status + ' ' + errText.slice(0,100));
+    }
     const result = await res.json();
+    if (!result.content || !result.content[0]) throw new Error('レスポンス異常');
     document.getElementById('analysisResult').textContent = result.content[0].text;
   } catch(e) {
     document.getElementById('analysisResult').textContent = '分析失敗: ' + e.message;

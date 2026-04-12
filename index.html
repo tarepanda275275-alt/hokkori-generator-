@@ -3,225 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ほっこり自動生成 — つなぐ珈琲</title>
+<title>ほっこりシステム — つなぐ珈琲</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green: #1A4731;
-    --green-mid: #2E7D52;
-    --green-light: #E8F5EE;
-    --amber: #C17F24;
-    --amber-light: #FDF3E3;
-    --cream: #F7F3EE;
-    --border: #C8BFA0;
-    --text: #1a1a1a;
-    --gray: #888;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Noto Sans JP', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+:root {
+  --green: #1A4731; --green-mid: #2E7D52; --green-light: #E8F5EE;
+  --amber: #C17F24; --amber-light: #FDF3E3;
+  --cream: #F7F3EE; --border: #C8BFA0; --text: #1a1a1a; --gray: #888;
+  --red: #c0392b; --blue: #2471a3;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Noto Sans JP',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
 
-  header { background: var(--green); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-  header .title { font-family: 'Zen Old Mincho', serif; color: white; font-size: 15px; letter-spacing: 0.12em; }
-  header .sub { font-size: 10px; color: var(--amber); letter-spacing: 0.1em; margin-top: 2px; }
+header { background:var(--green); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
+header .title { font-family:'Zen Old Mincho',serif; color:white; font-size:15px; letter-spacing:0.12em; }
+header .sub { font-size:10px; color:var(--amber); letter-spacing:0.1em; margin-top:2px; }
+header .reload-btn { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; padding:6px 14px; font-size:11px; cursor:pointer; font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; }
+header .reload-btn:hover { background:rgba(255,255,255,0.25); }
 
-  .container { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
+/* タブ */
+.main-tabs { display:flex; background:var(--green); padding:0 24px; border-top:1px solid rgba(255,255,255,0.1); }
+.main-tab { padding:10px 20px; font-family:'Zen Old Mincho',serif; font-size:12px; color:rgba(255,255,255,0.55); cursor:pointer; border-bottom:2px solid transparent; letter-spacing:0.08em; transition:all 0.2s; }
+.main-tab:hover { color:rgba(255,255,255,0.8); }
+.main-tab.active { color:var(--amber); border-bottom-color:var(--amber); }
 
-  /* セクション共通 */
-  .section { background: white; border: 1px solid var(--border); border-radius: 3px; margin-bottom: 18px; overflow: hidden; }
-  .section-header { background: var(--green); padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; }
-  .section-header h2 { font-family: 'Zen Old Mincho', serif; font-size: 12px; color: white; font-weight: 400; letter-spacing: 0.1em; }
-  .section-body { padding: 16px; }
+.container { max-width:1000px; margin:0 auto; padding:24px 20px; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
 
-  /* エピソード */
-  .episodes-list { display: flex; flex-direction: column; gap: 8px; }
-  .episode-card { border: 1px solid #E0D8CC; border-radius: 3px; padding: 11px 14px 11px 12px; background: var(--cream); cursor: pointer; transition: border-color 0.2s; display: flex; gap: 10px; align-items: flex-start; }
-  .episode-card:hover { border-color: var(--green-mid); }
-  .episode-card.selected { border-color: var(--green); background: var(--green-light); }
-  .ep-check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; background: white; transition: all 0.2s; }
-  .episode-card.selected .ep-check { background: var(--green); border-color: var(--green); }
-  .ep-content { flex: 1; }
-  .ep-meta { display: flex; gap: 10px; margin-bottom: 4px; }
-  .ep-store { font-size: 10px; color: var(--amber); letter-spacing: 0.08em; font-family: 'Zen Old Mincho', serif; }
-  .ep-date { font-size: 10px; color: var(--gray); }
-  .ep-text { font-family: 'Zen Old Mincho', serif; font-size: 12px; line-height: 1.85; color: var(--text); }
+/* カード共通 */
+.card { background:white; border:1px solid var(--border); border-radius:3px; margin-bottom:16px; overflow:hidden; }
+.card-header { background:var(--green); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; }
+.card-header h2 { font-family:'Zen Old Mincho',serif; font-size:12px; color:white; font-weight:400; letter-spacing:0.1em; }
+.card-body { padding:16px; }
 
-  /* 写真アップロード */
-  .photo-upload-area { border: 2px dashed var(--border); border-radius: 4px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
-  .photo-upload-area:hover { border-color: var(--green-mid); background: var(--green-light); }
-  .photo-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-icon { font-size: 28px; margin-bottom: 6px; }
-  .upload-text { font-family: 'Zen Old Mincho', serif; font-size: 12px; color: var(--gray); letter-spacing: 0.06em; }
-  .upload-sub { font-size: 10px; color: #bbb; margin-top: 4px; }
+/* ローディング */
+.loading-msg { padding:20px; font-size:12px; color:var(--gray); font-family:'Zen Old Mincho',serif; text-align:center; }
+.error-msg { padding:16px; font-size:12px; color:var(--red); }
 
-  .photo-preview-wrap { position: relative; }
-  .photo-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 3px; display: block; }
-  .photo-remove { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+/* ===== デイリータブ ===== */
+.date-group { margin-bottom:20px; }
+.date-label { font-family:'Zen Old Mincho',serif; font-size:12px; color:var(--green); font-weight:700; letter-spacing:0.1em; padding:6px 0; border-bottom:1px solid var(--green-light); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.date-count { font-size:10px; color:var(--amber); font-weight:400; }
 
-  /* テキストスタイル設定 */
-  .style-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
-  .style-label { font-size: 11px; color: var(--gray); min-width: 60px; }
-  .style-options { display: flex; gap: 6px; flex-wrap: wrap; }
-  .style-btn { padding: 5px 12px; border: 1px solid var(--border); background: white; font-family: 'Zen Old Mincho', serif; font-size: 11px; cursor: pointer; color: var(--gray); transition: all 0.15s; border-radius: 2px; }
-  .style-btn.active { background: var(--green); color: white; border-color: var(--green); }
+.ep-row { border:1px solid #e8e0d0; border-radius:3px; padding:12px 14px; margin-bottom:8px; background:var(--cream); display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; align-items:start; }
+.ep-row:hover { border-color:var(--green-mid); }
+.ep-meta { display:flex; flex-direction:column; gap:4px; }
+.ep-store-badge { font-size:9px; color:white; background:var(--green-mid); padding:2px 7px; border-radius:2px; letter-spacing:0.06em; font-family:'Zen Old Mincho',serif; display:inline-block; }
+.ep-staff { font-size:10px; color:var(--gray); font-family:'Zen Old Mincho',serif; margin-top:2px; }
+.ep-episode { font-family:'Zen Old Mincho',serif; font-size:11.5px; line-height:1.9; color:var(--text); }
+.ep-sub { font-size:10.5px; color:var(--gray); line-height:1.8; }
+.ep-sub .sub-label { color:var(--amber); font-size:9px; letter-spacing:0.06em; margin-bottom:2px; }
 
-  /* 生成ボタン */
-  .generate-area { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; align-items: center; }
-  .btn { padding: 11px 22px; border: none; cursor: pointer; font-family: 'Zen Old Mincho', serif; font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s; }
-  .btn-instagram { background: var(--amber); color: white; }
-  .btn-instagram:hover { background: #a36a1a; }
-  .btn-newspaper { background: var(--green); color: white; }
-  .btn-newspaper:hover { background: #122e21; }
-  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
-  .hint { font-size: 11px; color: var(--gray); font-family: 'Zen Old Mincho', serif; }
+/* ===== コンテンツ生成タブ ===== */
+.episodes-list { display:flex; flex-direction:column; gap:8px; }
+.episode-card { border:1px solid #e0d8cc; border-radius:3px; padding:10px 12px; background:var(--cream); cursor:pointer; transition:border-color 0.2s; display:flex; gap:10px; align-items:flex-start; }
+.episode-card:hover { border-color:var(--green-mid); }
+.episode-card.selected { border-color:var(--green); background:var(--green-light); }
+.ep-check { width:15px; height:15px; border:1.5px solid var(--border); border-radius:2px; flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; font-size:9px; color:white; background:white; transition:all 0.2s; }
+.episode-card.selected .ep-check { background:var(--green); border-color:var(--green); }
+.ep-content { flex:1; }
+.ep-meta2 { display:flex; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+.ep-store2 { font-size:10px; color:var(--amber); letter-spacing:0.08em; font-family:'Zen Old Mincho',serif; }
+.ep-date2 { font-size:10px; color:var(--gray); }
+.ep-text2 { font-family:'Zen Old Mincho',serif; font-size:11.5px; line-height:1.85; color:var(--text); }
 
-  /* 出力 */
-  .output-section { display: none; }
-  .output-section.visible { display: block; }
-  .output-tabs { display: flex; }
-  .tab { padding: 9px 20px; font-family: 'Zen Old Mincho', serif; font-size: 11px; letter-spacing: 0.08em; cursor: pointer; border: 1px solid var(--border); background: #eee; color: var(--gray); transition: all 0.2s; }
-  .tab.active { background: white; color: var(--green); border-bottom-color: white; font-weight: 700; }
-  .output-content { background: white; border: 1px solid var(--border); border-top: none; padding: 22px; }
+.generate-area { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+.btn { padding:10px 20px; border:none; cursor:pointer; font-family:'Zen Old Mincho',serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; }
+.btn-amber { background:var(--amber); color:white; }
+.btn-amber:hover { background:#a36a1a; }
+.btn-green { background:var(--green); color:white; }
+.btn-green:hover { background:#122e21; }
+.btn:disabled { opacity:0.35; cursor:not-allowed; }
+.hint { font-size:11px; color:var(--gray); font-family:'Zen Old Mincho',serif; }
 
-  .loading { display: flex; align-items: center; gap: 10px; padding: 16px 0; color: var(--gray); font-size: 12px; font-family: 'Zen Old Mincho', serif; }
-  .spinner { width: 16px; height: 16px; border: 2px solid var(--green-light); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* 写真アップロード */
+.photo-upload-area { border:2px dashed var(--border); border-radius:4px; padding:20px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
+.photo-upload-area:hover { border-color:var(--green-mid); background:var(--green-light); }
+.photo-upload-area input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+.photo-preview-wrap { position:relative; }
+.photo-preview { width:100%; max-height:180px; object-fit:cover; border-radius:3px; display:block; }
+.photo-remove { position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.5); color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
-  /* Instagram出力 */
-  .insta-output { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+/* Instagram card */
+.insta-output { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start; }
+.insta-card-wrap { position:relative; width:260px; height:260px; flex-shrink:0; overflow:hidden; border-radius:3px; border:1px solid var(--border); background:var(--cream); }
+.card-bg { position:absolute; inset:0; background-size:cover; background-position:center; }
+.card-overlay { position:absolute; inset:0; display:flex; flex-direction:column; padding:18px 16px 14px; }
+.overlay-dark .card-overlay { background:rgba(0,0,0,0.42); }
+.overlay-green .card-overlay { background:rgba(26,71,49,0.68); }
+.overlay-bottom .card-overlay { background:linear-gradient(to top,rgba(0,0,0,0.75) 50%,transparent 100%); }
+.overlay-none .card-overlay { background:transparent; }
+.text-white .c-brand,.text-white .c-tag,.text-white .c-ep,.text-white .c-store { color:white; }
+.text-white .c-rule { background:rgba(193,127,36,0.8); }
+.text-white .c-amber-line { background:rgba(193,127,36,0.8); }
+.text-cream .c-brand,.text-cream .c-tag,.text-cream .c-ep,.text-cream .c-store { color:#f0ebe3; }
+.no-photo .card-overlay { background:var(--cream); }
+.no-photo .c-brand { color:var(--green); }
+.no-photo .c-tag { color:var(--amber); }
+.no-photo .c-ep { color:var(--text); }
+.no-photo .c-store { color:var(--gray); }
+.no-photo .c-rule { background:var(--border); }
+.c-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.c-brand { font-family:'Zen Old Mincho',serif; font-size:9px; letter-spacing:0.14em; }
+.c-tag { font-family:'Zen Old Mincho',serif; font-size:8px; letter-spacing:0.1em; }
+.c-rule { height:0.5px; background:var(--border); margin-bottom:10px; }
+.c-ep { font-family:'Zen Old Mincho',serif; font-size:11px; line-height:2.1; letter-spacing:0.04em; flex:1; }
+.c-foot { display:flex; justify-content:space-between; align-items:flex-end; margin-top:6px; }
+.c-store { font-family:'Zen Old Mincho',serif; font-size:7px; letter-spacing:0.06em; opacity:0.8; }
+.c-amber-line { width:14px; height:1.5px; background:var(--amber); }
 
-  /* カードプレビュー（正方形） */
-  .insta-card-wrap {
-    position: relative;
-    width: 280px;
-    height: 280px;
-    flex-shrink: 0;
-    overflow: hidden;
-    border-radius: 3px;
-    border: 1px solid var(--border);
-    background: var(--cream);
-  }
-  .card-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-  }
-  .card-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 18px 16px;
-  }
-  /* オーバーレイのスタイルバリエーション */
-  .overlay-dark .card-overlay { background: rgba(0,0,0,0.42); }
-  .overlay-green .card-overlay { background: rgba(26,71,49,0.68); }
-  .overlay-bottom .card-overlay { background: linear-gradient(to top, rgba(0,0,0,0.75) 50%, transparent 100%); }
-  .overlay-none .card-overlay { background: transparent; }
+.insta-controls { flex:1; min-width:200px; }
+.ctrl-title { font-size:11px; color:var(--green); font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; margin-bottom:6px; border-bottom:0.5px solid var(--border); padding-bottom:3px; }
+.caption-box { background:var(--cream); border:1px solid var(--border); padding:10px 12px; font-size:11.5px; line-height:1.9; color:var(--text); white-space:pre-wrap; font-family:'Zen Old Mincho',serif; letter-spacing:0.03em; min-height:70px; }
+.copy-btn { margin-top:7px; padding:6px 13px; background:var(--green-light); border:1px solid var(--green-mid); color:var(--green); font-size:10px; cursor:pointer; font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; transition:all 0.2s; display:inline-block; }
+.copy-btn:hover { background:var(--green); color:white; }
+.style-row { display:flex; gap:10px; align-items:center; margin:8px 0 4px; flex-wrap:wrap; }
+.style-label { font-size:10px; color:var(--gray); min-width:55px; }
+.style-options { display:flex; gap:5px; flex-wrap:wrap; }
+.style-btn { padding:4px 10px; border:1px solid var(--border); background:white; font-family:'Zen Old Mincho',serif; font-size:10px; cursor:pointer; color:var(--gray); transition:all 0.15s; border-radius:2px; }
+.style-btn.active { background:var(--green); color:white; border-color:var(--green); }
 
-  /* テキストカラーバリエーション */
-  .text-white .c-brand, .text-white .c-tag, .text-white .c-ep, .text-white .c-store { color: white; }
-  .text-white .c-rule { background: rgba(193,127,36,0.8); }
-  .text-white .c-amber-line { background: rgba(193,127,36,0.8); }
-  .text-cream .c-brand, .text-cream .c-tag, .text-cream .c-ep, .text-cream .c-store { color: #f0ebe3; }
-  .text-cream .c-rule { background: rgba(193,127,36,0.6); }
-  .text-cream .c-amber-line { background: var(--amber); }
+/* 新聞 */
+.newspaper { font-family:'Zen Old Mincho',serif; border:1px solid var(--border); background:var(--cream); padding:20px; }
+.np-header { text-align:center; border-bottom:2.5px solid var(--green); padding-bottom:7px; margin-bottom:5px; }
+.np-title { font-size:20px; font-weight:700; color:var(--green); letter-spacing:0.18em; }
+.np-sub { font-size:9px; color:var(--gray); letter-spacing:0.1em; margin-top:2px; }
+.np-meta { display:flex; justify-content:space-between; font-size:9px; color:#aaa; border-bottom:0.5px solid var(--border); padding-bottom:4px; margin-bottom:12px; }
+.np-main { border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:12px; }
+.np-label { font-size:8px; color:var(--amber); letter-spacing:0.14em; margin-bottom:3px; }
+.np-main-title { font-size:15px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:7px; }
+.np-rule { width:18px; height:1.5px; background:var(--amber); margin-bottom:8px; }
+.np-body { font-size:11px; line-height:2.1; color:var(--text); }
+.np-store-note { font-size:8px; color:var(--gray); margin-top:4px; }
+.np-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-bottom:0.5px solid var(--border); padding-bottom:12px; margin-bottom:12px; }
+.np-col { padding:0 10px; border-right:0.5px solid var(--border); }
+.np-col:first-child { padding-left:0; }
+.np-col:last-child { border-right:none; padding-right:0; }
+.np-col-title { font-size:11px; font-weight:700; color:var(--green); line-height:1.6; margin-bottom:5px; }
+.np-col-body { font-size:10px; line-height:2.0; color:var(--text); }
+.np-col-store { font-size:8px; color:#aaa; margin-top:4px; }
+.np-footer { display:flex; justify-content:space-between; border-top:1px solid var(--green); padding-top:6px; font-size:9px; color:var(--gray); }
 
-  /* カード内テキスト */
-  .c-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-  .c-brand { font-family: 'Zen Old Mincho', serif; font-size: 9px; letter-spacing: 0.14em; }
-  .c-tag { font-family: 'Zen Old Mincho', serif; font-size: 8.5px; letter-spacing: 0.1em; }
-  .c-rule { height: 0.5px; background: var(--border); margin-bottom: 10px; }
-  .c-ep { font-family: 'Zen Old Mincho', serif; font-size: 11px; line-height: 2.1; letter-spacing: 0.04em; flex: 1; }
-  .c-foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 8px; }
-  .c-store { font-family: 'Zen Old Mincho', serif; font-size: 7.5px; letter-spacing: 0.06em; opacity: 0.8; }
-  .c-amber-line { width: 16px; height: 1.5px; background: var(--amber); }
+/* ===== 分析タブ ===== */
+.store-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+.store-tab { padding:7px 16px; border:1px solid var(--border); background:white; font-family:'Zen Old Mincho',serif; font-size:11px; cursor:pointer; color:var(--gray); transition:all 0.2s; border-radius:2px; }
+.store-tab.active { background:var(--green); color:white; border-color:var(--green); }
 
-  /* 写真なし時のカード */
-  .no-photo .card-overlay { background: var(--cream); }
-  .no-photo .c-brand { color: var(--green); }
-  .no-photo .c-tag { color: var(--amber); }
-  .no-photo .c-ep { color: var(--text); }
-  .no-photo .c-store { color: var(--gray); }
-  .no-photo .c-rule { background: var(--border); }
+.analysis-result { background:var(--cream); border:1px solid var(--border); padding:16px; font-family:'Zen Old Mincho',serif; font-size:12px; line-height:2; color:var(--text); min-height:100px; white-space:pre-wrap; }
+.analysis-placeholder { color:var(--gray); font-size:12px; padding:20px; text-align:center; }
 
-  /* 右側のコントロール */
-  .insta-controls { flex: 1; min-width: 200px; }
-  .ctrl-section { margin-bottom: 14px; }
-  .ctrl-title { font-size: 11px; color: var(--green); font-family: 'Zen Old Mincho', serif; letter-spacing: 0.06em; margin-bottom: 6px; border-bottom: 0.5px solid var(--border); padding-bottom: 4px; }
+.analyze-btn { padding:10px 22px; background:var(--blue); color:white; border:none; cursor:pointer; font-family:'Zen Old Mincho',serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; margin-right:8px; }
+.analyze-btn:hover { background:#1a5276; }
+.analyze-btn:disabled { opacity:0.4; cursor:not-allowed; }
 
-  .caption-box { background: var(--cream); border: 1px solid var(--border); padding: 11px 13px; font-size: 11.5px; line-height: 1.9; color: var(--text); white-space: pre-wrap; font-family: 'Zen Old Mincho', serif; letter-spacing: 0.03em; min-height: 80px; }
+.stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+.stat-card { background:white; border:1px solid var(--border); padding:12px 14px; text-align:center; }
+.stat-num { font-size:22px; font-weight:700; color:var(--green); font-family:'Zen Old Mincho',serif; }
+.stat-label { font-size:10px; color:var(--gray); margin-top:3px; }
 
-  .copy-btn { margin-top: 8px; padding: 7px 14px; background: var(--green-light); border: 1px solid var(--green-mid); color: var(--green); font-size: 10px; cursor: pointer; font-family: 'Zen Old Mincho', serif; letter-spacing: 0.06em; transition: all 0.2s; display: inline-block; }
-  .copy-btn:hover { background: var(--green); color: white; }
+.loading { display:flex; align-items:center; gap:8px; padding:16px; color:var(--gray); font-size:12px; font-family:'Zen Old Mincho',serif; }
+.spinner { width:15px; height:15px; border:2px solid var(--green-light); border-top-color:var(--green); border-radius:50%; animation:spin 0.8s linear infinite; flex-shrink:0; }
+@keyframes spin { to { transform:rotate(360deg); } }
 
-  /* 新聞出力 */
-  .newspaper { font-family: 'Zen Old Mincho', serif; border: 1px solid var(--border); background: var(--cream); padding: 22px 22px 26px; }
-  .np-header { text-align: center; border-bottom: 2.5px solid var(--green); padding-bottom: 8px; margin-bottom: 5px; }
-  .np-title { font-size: 20px; font-weight: 700; color: var(--green); letter-spacing: 0.18em; }
-  .np-sub { font-size: 9px; color: var(--gray); letter-spacing: 0.1em; margin-top: 2px; }
-  .np-meta { display: flex; justify-content: space-between; font-size: 9px; color: #aaa; border-bottom: 0.5px solid var(--border); padding-bottom: 5px; margin-bottom: 12px; letter-spacing: 0.06em; }
-  .np-main { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; }
-  .np-label { font-size: 8px; color: var(--amber); letter-spacing: 0.14em; margin-bottom: 4px; }
-  .np-main-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.7; margin-bottom: 8px; }
-  .np-rule { width: 18px; height: 1.5px; background: var(--amber); margin-bottom: 8px; }
-  .np-body { font-size: 11px; line-height: 2.1; color: var(--text); }
-  .np-store-note { font-size: 8px; color: var(--gray); margin-top: 5px; }
-  .np-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-bottom: 0.5px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; }
-  .np-col { padding: 0 12px; border-right: 0.5px solid var(--border); }
-  .np-col:first-child { padding-left: 0; }
-  .np-col:last-child { border-right: none; padding-right: 0; }
-  .np-col-title { font-size: 11px; font-weight: 700; color: var(--green); line-height: 1.6; margin-bottom: 5px; }
-  .np-col-body { font-size: 10px; line-height: 2.0; color: var(--text); }
-  .np-col-store { font-size: 8px; color: #aaa; margin-top: 4px; }
-  .np-footer { display: flex; justify-content: space-between; border-top: 1px solid var(--green); padding-top: 7px; font-size: 9px; color: var(--gray); }
+.output-tabs { display:flex; }
+.out-tab { padding:8px 18px; font-family:'Zen Old Mincho',serif; font-size:11px; letter-spacing:0.08em; cursor:pointer; border:1px solid var(--border); background:#eee; color:var(--gray); transition:all 0.2s; }
+.out-tab.active { background:white; color:var(--green); border-bottom-color:white; font-weight:700; }
+.output-content { background:white; border:1px solid var(--border); border-top:none; padding:20px; }
 </style>
 </head>
 <body>
 
 <header>
   <div>
-    <div class="title">ほっこり自動生成システム</div>
-    <div class="sub">brew_diary → Instagram / ほっこり通信</div>
+    <div class="title">ほっこりシステム</div>
+    <div class="sub">つなぐ珈琲 / brew_diary</div>
   </div>
+  <button class="reload-btn" onclick="loadData()">データ更新</button>
 </header>
+
+<div class="main-tabs">
+  <div class="main-tab active" onclick="switchMain('daily')">📅 デイリー</div>
+  <div class="main-tab" onclick="switchMain('content')">✨ コンテンツ生成</div>
+  <div class="main-tab" onclick="switchMain('analysis')">📊 店舗分析・AIアドバイス</div>
+</div>
 
 <div class="container">
 
-  <!-- エピソード選択 -->
-  <div class="section">
-    <div class="section-header">
-      <h2>① エピソードを選ぶ</h2>
-      <span style="font-size:10px;color:var(--amber);letter-spacing:0.06em;" id="selectCount">0件選択中</span>
-    </div>
-    <div class="section-body">
-      <div class="episodes-list" id="episodesList"></div>
+  <!-- ===== デイリータブ ===== -->
+  <div id="tab-daily" class="tab-content active">
+    <div class="card">
+      <div class="card-header">
+        <h2>日別エピソード一覧</h2>
+        <span id="daily-count" style="font-size:10px;color:var(--amber);"></span>
+      </div>
+      <div class="card-body" id="daily-body">
+        <div class="loading-msg">読み込み中...</div>
+      </div>
     </div>
   </div>
 
-  <!-- 写真アップロード（Instagram用） -->
-  <div class="section">
-    <div class="section-header">
-      <h2>② 写真を選ぶ（Instagram用・任意）</h2>
-      <span style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.06em;">なくても生成できます</span>
-    </div>
-    <div class="section-body">
-      <div id="uploadArea" class="photo-upload-area">
-        <input type="file" accept="image/*" onchange="handlePhoto(event)">
-        <div class="upload-icon">📷</div>
-        <div class="upload-text">写真をタップして選択</div>
-        <div class="upload-sub">JPG / PNG / HEIC</div>
+  <!-- ===== コンテンツ生成タブ ===== -->
+  <div id="tab-content" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <h2>① エピソードを選ぶ</h2>
+        <span id="selectCount" style="font-size:10px;color:var(--amber);">0件選択中</span>
       </div>
-      <div id="photoPreview" style="display:none">
-        <div class="photo-preview-wrap">
-          <img id="previewImg" class="photo-preview">
-          <button class="photo-remove" onclick="removePhoto()">✕</button>
+      <div class="card-body">
+        <div class="episodes-list" id="episodesList"><div class="loading-msg">読み込み中...</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>② 写真を選ぶ（Instagram用・任意）</h2></div>
+      <div class="card-body">
+        <div id="uploadArea" class="photo-upload-area">
+          <input type="file" accept="image/*" onchange="handlePhoto(event)">
+          <div style="font-size:24px;margin-bottom:5px;">📷</div>
+          <div style="font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--gray);">写真をタップして選択</div>
         </div>
-        <!-- オーバーレイスタイル -->
-        <div style="margin-top:12px;">
+        <div id="photoPreview" style="display:none">
+          <div class="photo-preview-wrap">
+            <img id="previewImg" class="photo-preview">
+            <button class="photo-remove" onclick="removePhoto()">✕</button>
+          </div>
           <div class="style-row">
             <span class="style-label">オーバーレイ</span>
-            <div class="style-options" id="overlayOptions">
+            <div class="style-options">
               <button class="style-btn active" onclick="setStyle('overlay','dark',this)">暗め</button>
               <button class="style-btn" onclick="setStyle('overlay','green',this)">グリーン</button>
               <button class="style-btn" onclick="setStyle('overlay','bottom',this)">下から</button>
@@ -230,7 +239,7 @@
           </div>
           <div class="style-row">
             <span class="style-label">文字色</span>
-            <div class="style-options" id="textOptions">
+            <div class="style-options">
               <button class="style-btn active" onclick="setStyle('text','white',this)">白</button>
               <button class="style-btn" onclick="setStyle('text','cream',this)">クリーム</button>
             </div>
@@ -238,28 +247,58 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 生成ボタン -->
-  <div class="generate-area">
-    <button class="btn btn-instagram" id="btnInsta" onclick="generate('instagram')" disabled>📷 Instagram投稿を生成</button>
-    <button class="btn btn-newspaper" id="btnNews" onclick="generate('newspaper')" disabled>📰 ほっこり通信を生成</button>
-    <span class="hint" id="hintText">エピソードを選択してください</span>
-  </div>
-
-  <!-- 出力 -->
-  <div class="output-section" id="outputSection">
-    <div class="output-tabs">
-      <div class="tab active" id="tabInsta" onclick="switchTab('instagram')">Instagram</div>
-      <div class="tab" id="tabNews" onclick="switchTab('newspaper')">ほっこり通信</div>
+    <div class="generate-area">
+      <button class="btn btn-amber" id="btnInsta" onclick="generate('instagram')" disabled>📷 Instagram投稿を生成</button>
+      <button class="btn btn-green" id="btnNews" onclick="generate('newspaper')" disabled>📰 ほっこり通信を生成</button>
+      <span class="hint" id="hintText">エピソードを選択してください</span>
     </div>
-    <div class="output-content">
-      <div id="loadingArea" class="loading" style="display:none">
-        <div class="spinner"></div>
-        <span id="loadingText">AIが書き換えています...</span>
+
+    <div id="outputSection" style="display:none">
+      <div class="output-tabs">
+        <div class="out-tab active" id="outTabInsta" onclick="switchOut('instagram')">Instagram</div>
+        <div class="out-tab" id="outTabNews" onclick="switchOut('newspaper')">ほっこり通信</div>
       </div>
-      <div id="instagramOutput" style="display:none"></div>
-      <div id="newspaperOutput" style="display:none"></div>
+      <div class="output-content">
+        <div id="genLoading" class="loading" style="display:none"><div class="spinner"></div><span id="genLoadingText">生成中...</span></div>
+        <div id="instagramOutput" style="display:none"></div>
+        <div id="newspaperOutput" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 分析タブ ===== -->
+  <div id="tab-analysis" class="tab-content">
+    <div class="card">
+      <div class="card-header"><h2>店舗を選ぶ</h2></div>
+      <div class="card-body">
+        <div class="store-tabs" id="storeTabs">
+          <button class="store-tab active" onclick="selectStore('all',this)">全店舗</button>
+          <button class="store-tab" onclick="selectStore('大曲',this)">大曲 1号店</button>
+          <button class="store-tab" onclick="selectStore('秋田',this)">秋田市 2号店</button>
+          <button class="store-tab" onclick="selectStore('横手',this)">横手市 3号店</button>
+        </div>
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card"><div class="stat-num" id="statTotal">—</div><div class="stat-label">エピソード数</div></div>
+          <div class="stat-card"><div class="stat-num" id="statDays">—</div><div class="stat-label">営業日数</div></div>
+          <div class="stat-card"><div class="stat-num" id="statStaff">—</div><div class="stat-label">つなぎ手数</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>AIアドバイス</h2></div>
+      <div class="card-body">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="analyze-btn" id="btnTendency" onclick="analyze('tendency')">お客様の傾向を分析</button>
+          <button class="analyze-btn" id="btnAdvice" onclick="analyze('advice')">接客アドバイスを生成</button>
+          <button class="analyze-btn" id="btnHighlight" onclick="analyze('highlight')">今週のほっこりを選ぶ</button>
+        </div>
+        <div id="analysisLoading" class="loading" style="display:none"><div class="spinner"></div><span id="analysisLoadingText">分析中...</span></div>
+        <div id="analysisResult" class="analysis-result">
+          <div class="analysis-placeholder">店舗を選んで分析ボタンを押してください</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -269,31 +308,106 @@
 const SUPABASE_URL = 'https://ddzqgbinmmqboucxdhog.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkenFnYmlubW1xYm91Y3hkaG9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2ODg4NTYsImV4cCI6MjA5MDI2NDg1Nn0.13_Uq-NCLMeXtM96VLixwrlSPIeuU9jzDW0lYfWN8RE';
 
+let ALL_DATA = [];
 let EPISODES = [];
 let selectedIds = new Set();
 let photoDataUrl = null;
 let overlayStyle = 'dark';
 let textStyle = 'white';
+let currentStore = 'all';
 let generatedCard = '';
-let generatedCaption = '';
 
-function renderEpisodes() {
-  document.getElementById('episodesList').innerHTML = EPISODES.map(ep => `
-    <div class="episode-card ${selectedIds.has(String(ep.id))?'selected':''}" onclick="toggleEp(this.dataset.id)" data-id="${ep.id}">
-      <div class="ep-check">${selectedIds.has(ep.id)?'✓':''}</div>
-      <div class="ep-content">
-        <div class="ep-meta">
-          <span class="ep-store">${ep.store}</span>
-          <span class="ep-date">${ep.date}</span>
-        </div>
-        <div class="ep-text">${ep.text}</div>
-      </div>
-    </div>
-  `).join('');
+// ===== データ読み込み =====
+async function loadData() {
+  try {
+    const res = await fetch(
+      SUPABASE_URL + '/rest/v1/brew_diary?order=date.desc,created_at.desc&limit=100',
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    if (!res.ok) throw new Error('取得失敗: ' + res.status);
+    ALL_DATA = await res.json();
+    EPISODES = ALL_DATA.filter(r => r.episode && r.episode.trim().length > 0);
+    renderDaily();
+    renderEpisodes();
+    updateStats();
+  } catch(e) {
+    document.getElementById('daily-body').innerHTML = '<div class="error-msg">読み込み失敗: ' + e.message + '</div>';
+  }
 }
 
-function toggleEp(id) {
-  const sid = String(id);
+// ===== タブ切替 =====
+function switchMain(tab) {
+  document.querySelectorAll('.main-tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  const tabs = ['daily','content','analysis'];
+  document.querySelectorAll('.main-tab')[tabs.indexOf(tab)].classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// ===== デイリー =====
+function renderDaily() {
+  const groups = {};
+  ALL_DATA.forEach(r => {
+    const d = r.date || (r.created_at || '').slice(0,10);
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(r);
+  });
+
+  const dates = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+  document.getElementById('daily-count').textContent = ALL_DATA.length + '件';
+
+  document.getElementById('daily-body').innerHTML = dates.map(d => {
+    const rows = groups[d];
+    const rowsHtml = rows.map(r => {
+      const hasEp = r.episode && r.episode.trim();
+      const hasAch = r.achievement && r.achievement.trim();
+      const hasImp = r.improvement && r.improvement.trim();
+      return `
+        <div class="ep-row">
+          <div class="ep-meta">
+            <span class="ep-store-badge">${r.store || '—'}</span>
+            <span class="ep-staff">${r.staff || ''}</span>
+          </div>
+          <div>
+            ${hasEp ? '<div class="ep-episode">' + r.episode + '</div>' : '<div style="font-size:11px;color:#bbb;">エピソードなし</div>'}
+          </div>
+          <div>
+            ${hasAch ? '<div class="ep-sub"><div class="sub-label">よかったこと</div>' + r.achievement + '</div>' : ''}
+            ${hasImp ? '<div class="ep-sub" style="margin-top:6px"><div class="sub-label">改善点</div>' + r.improvement + '</div>' : ''}
+          </div>
+        </div>`;
+    }).join('');
+    return `<div class="date-group">
+      <div class="date-label">${d.replace(/-/g,'.')} <span class="date-count">${rows.length}件</span></div>
+      ${rowsHtml}
+    </div>`;
+  }).join('');
+}
+
+// ===== コンテンツ生成 =====
+function renderEpisodes() {
+  if (EPISODES.length === 0) {
+    document.getElementById('episodesList').innerHTML = '<div class="loading-msg">エピソードが見つかりません</div>';
+    return;
+  }
+  document.getElementById('episodesList').innerHTML = EPISODES.map(ep => {
+    const sid = String(ep.id);
+    const d = ep.date || (ep.created_at || '').slice(0,10);
+    return `<div class="episode-card ${selectedIds.has(sid)?'selected':''}" onclick="toggleEp('${sid}')" data-id="${sid}">
+      <div class="ep-check">${selectedIds.has(sid)?'✓':''}</div>
+      <div class="ep-content">
+        <div class="ep-meta2">
+          <span class="ep-store2">${ep.store || '—'}</span>
+          <span class="ep-date2">${d}</span>
+          ${ep.staff ? '<span class="ep-date2">/ ' + ep.staff + '</span>' : ''}
+        </div>
+        <div class="ep-text2">${ep.episode}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleEp(sid) {
   selectedIds.has(sid) ? selectedIds.delete(sid) : selectedIds.add(sid);
   updateUI();
   renderEpisodes();
@@ -301,13 +415,13 @@ function toggleEp(id) {
 
 function updateUI() {
   const n = selectedIds.size;
-  document.getElementById('selectCount').textContent = `${n}件選択中`;
+  document.getElementById('selectCount').textContent = n + '件選択中';
   document.getElementById('btnInsta').disabled = n === 0;
   document.getElementById('btnNews').disabled = n < 2;
   document.getElementById('hintText').textContent =
     n === 0 ? 'エピソードを選択してください' :
     n === 1 ? 'Instagram投稿を生成できます（通信は2件以上）' :
-    'Instagram投稿・ほっこり通信を生成できます';
+    'Instagram・ほっこり通信を生成できます';
 }
 
 function handlePhoto(e) {
@@ -334,10 +448,10 @@ function removePhoto() {
 function setStyle(type, val, btn) {
   if (type === 'overlay') {
     overlayStyle = val;
-    document.querySelectorAll('#overlayOptions .style-btn').forEach(b => b.classList.remove('active'));
+    btn.closest('.style-options').querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
   } else {
     textStyle = val;
-    document.querySelectorAll('#textOptions .style-btn').forEach(b => b.classList.remove('active'));
+    btn.closest('.style-options').querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
   }
   btn.classList.add('active');
   if (generatedCard) updateCardPreview();
@@ -348,229 +462,150 @@ function updateCardPreview() {
   if (!wrap) return;
   wrap.className = 'insta-card-wrap';
   if (photoDataUrl) {
-    document.getElementById('cardBg').style.backgroundImage = `url(${photoDataUrl})`;
-    wrap.classList.add(`overlay-${overlayStyle}`, `text-${textStyle}`);
+    document.getElementById('cardBg').style.backgroundImage = 'url(' + photoDataUrl + ')';
+    wrap.classList.add('overlay-' + overlayStyle, 'text-' + textStyle);
   } else {
     document.getElementById('cardBg').style.backgroundImage = '';
     wrap.classList.add('no-photo');
   }
 }
 
-function switchTab(tab) {
-  document.getElementById('tabInsta').className = 'tab'+(tab==='instagram'?' active':'');
-  document.getElementById('tabNews').className = 'tab'+(tab==='newspaper'?' active':'');
+function switchOut(tab) {
+  document.getElementById('outTabInsta').className = 'out-tab' + (tab==='instagram'?' active':'');
+  document.getElementById('outTabNews').className = 'out-tab' + (tab==='newspaper'?' active':'');
   document.getElementById('instagramOutput').style.display = tab==='instagram'?'block':'none';
   document.getElementById('newspaperOutput').style.display = tab==='newspaper'?'block':'none';
 }
-
 
 async function fetchWithRetry(url, options, retries=3) {
   for (let i=0; i<retries; i++) {
     const res = await fetch(url, options);
     if (res.status === 429) {
       const wait = (i+1) * 8000;
-      document.getElementById("loadingText").textContent = `制限中... ${wait/1000}秒後に再試行 (${i+1}/${retries})`;
+      document.getElementById('genLoadingText').textContent = '制限中... ' + (wait/1000) + '秒後に再試行';
       await new Promise(r => setTimeout(r, wait));
       continue;
     }
     return res;
   }
-  throw new Error("リクエスト制限が続いています。しばらく待ってから再試行してください。");
+  throw new Error('リクエスト制限が続いています');
 }
 
 async function generate(type) {
   const selected = EPISODES.filter(ep => selectedIds.has(String(ep.id)));
   if (!selected.length) return;
+  const ep = selected[0];
 
-  document.getElementById('outputSection').className = 'output-section visible';
-  document.getElementById('loadingArea').style.display = 'flex';
+  document.getElementById('outputSection').style.display = 'block';
+  document.getElementById('genLoading').style.display = 'flex';
   document.getElementById('instagramOutput').style.display = 'none';
   document.getElementById('newspaperOutput').style.display = 'none';
-  document.getElementById('loadingText').textContent = type==='instagram' ? 'Instagram投稿を生成しています...' : 'ほっこり通信を生成しています...';
-  switchTab(type);
-
-  const ep = selected[0];
+  document.getElementById('genLoadingText').textContent = type==='instagram' ? 'Instagram投稿を生成中...' : 'ほっこり通信を生成中...';
+  switchOut(type);
 
   try {
     if (type === 'instagram') {
-      // 写真はAPIに送らず、テキストのみで生成
-      const prompt = `あなたはつなぐ珈琲（秋田県のスペシャルティコーヒーブランド）のライターです。
-以下のスタッフが書いたエピソードを、Instagram投稿用に書き換えてください。
-
-【ルール】
-- ですます調
-- 個人が特定される情報（名前・性別・年齢）は絶対に入れない
-- 情景が浮かぶ具体的な描写を入れる
-- スタッフがどう感じたかを自然に含める
-- カード用テキスト：60文字以内、\\nで2〜3回改行する
-- キャプション文：180〜220文字、ハッシュタグなし、温かみのある文体
-- 必ずJSON形式のみ返す。前後に説明文やマークダウン記号を入れない:
-{"card": "カード用テキスト", "caption": "キャプション文"}
-
-【エピソード】
-店舗: ${ep.store} / ${ep.date}
-内容: ${ep.text}`;
+      const prompt = `つなぐ珈琲（秋田県）のライターです。スタッフのエピソードをInstagram投稿用に書き換えてください。
+ルール：ですます調／個人特定情報なし／情景と感情を含む／カード用60字以内\\nで改行／キャプション180〜220字ハッシュタグなし
+JSON形式のみ：{"card":"テキスト","caption":"文章"}
+店舗:${ep.store} スタッフ:${ep.staff||'—'} 日付:${ep.date||''}
+エピソード:${ep.episode}
+${ep.achievement?'よかったこと:'+ep.achievement:''}`;
 
       const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 800,
-          messages: [{ role: 'user', content: prompt }]
-        })
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800, messages:[{role:'user',content:prompt}] })
       });
-
-      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
-      if (!data.content || !data.content[0]) throw new Error('APIレスポンス異常');
-
-      const rawText = data.content[0].text;
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('JSON取得失敗');
-      const parsed = JSON.parse(jsonMatch[0]);
-
+      const match = data.content[0].text.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('JSON取得失敗');
+      const parsed = JSON.parse(match[0]);
       generatedCard = parsed.card || '';
-      generatedCaption = parsed.caption || '';
-      renderInstagram(ep, generatedCard, generatedCaption);
+      renderInstagram(ep, parsed.card, parsed.caption);
 
     } else {
-      const texts = selected.map((e,i) => `エピソード${i+1}（${e.store} / ${e.date}）:\n${e.text}`).join('\n\n');
-      const prompt = `あなたはつなぐ珈琲（秋田県のスペシャルティコーヒーブランド）の編集者です。
-以下のエピソードから「ほっこり通信」の記事を作ってください。
-
-【ルール】
-- ですます調
-- 個人が特定される情報は絶対に入れない
-- 情景とスタッフの感情が伝わる文体
-- メイン記事：最も印象的なエピソードを130〜160文字で小説風に
-- サブ記事：残りのエピソードを各55〜75文字で
-- 必ずJSON形式のみ返す。前後に説明文やマークダウン記号を入れない:
-{"main":{"title":"タイトル20字以内","body":"本文","store":"店舗名と日付"},"subs":[{"title":"タイトル","body":"本文","store":"店舗名と日付"}]}
-
-【エピソード】
+      const texts = selected.map((e,i) =>
+        `エピソード${i+1}（${e.store} / ${e.date||''} / ${e.staff||''}）:\n${e.episode}${e.achievement?'\nよかった:'+e.achievement:''}`
+      ).join('\n\n');
+      const prompt = `つなぐ珈琲の編集者です。「ほっこり通信」を作成してください。
+ルール：ですます調／個人特定情報なし／情景と感情を含む／メイン130〜160字／サブ55〜75字
+JSON形式のみ：{"main":{"title":"20字以内","body":"本文","store":"店舗と日付"},"subs":[{"title":"","body":"","store":""}]}
 ${texts}`;
 
       const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1200,
-          messages: [{ role: 'user', content: prompt }]
-        })
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1200, messages:[{role:'user',content:prompt}] })
       });
-
-      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
-      if (!data.content || !data.content[0]) throw new Error('APIレスポンス異常');
-
-      const rawText = data.content[0].text;
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('JSON取得失敗');
-      const parsed = JSON.parse(jsonMatch[0]);
-      renderNewspaper(parsed);
+      const match = data.content[0].text.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('JSON取得失敗');
+      renderNewspaper(JSON.parse(match[0]));
     }
   } catch(e) {
-    console.error(e);
-    document.getElementById('loadingArea').style.display = 'none';
+    document.getElementById('genLoading').style.display = 'none';
     document.getElementById(type==='instagram'?'instagramOutput':'newspaperOutput').style.display = 'block';
     document.getElementById(type==='instagram'?'instagramOutput':'newspaperOutput').innerHTML =
-      `<div style="color:#c00;font-size:12px;padding:8px;">生成に失敗しました（${e.message}）。もう一度お試しください。</div>`;
+      '<div style="color:var(--red);font-size:12px;">生成失敗: ' + e.message + '</div>';
     return;
   }
-
-  document.getElementById('loadingArea').style.display = 'none';
+  document.getElementById('genLoading').style.display = 'none';
   document.getElementById(type==='instagram'?'instagramOutput':'newspaperOutput').style.display = 'block';
 }
 
 function renderInstagram(ep, cardText, caption) {
   const hasPhoto = !!photoDataUrl;
-  const cardLines = cardText.replace(/\\n/g, '\n').split('\n').join('<br>');
-
+  const cardLines = (cardText||'').replace(/\\n/g,'\n').split('\n').join('<br>');
+  const d = ep.date || (ep.created_at||'').slice(0,10);
   document.getElementById('instagramOutput').innerHTML = `
     <div class="insta-output">
       <div>
-        <div class="insta-card-wrap ${hasPhoto ? 'overlay-'+overlayStyle+' text-'+textStyle : 'no-photo'}" id="cardWrap">
+        <div class="insta-card-wrap ${hasPhoto?'overlay-'+overlayStyle+' text-'+textStyle:'no-photo'}" id="cardWrap">
           <div class="card-bg" id="cardBg" style="${hasPhoto?'background-image:url('+photoDataUrl+')':''}"></div>
           <div class="card-overlay">
-            <div class="c-top">
-              <span class="c-brand">つなぐ珈琲</span>
-              <span class="c-tag">ほっこり</span>
-            </div>
+            <div class="c-top"><span class="c-brand">つなぐ珈琲</span><span class="c-tag">ほっこり</span></div>
             <div class="c-rule"></div>
             <div class="c-ep">${cardLines}</div>
-            <div class="c-foot">
-              <span class="c-store">${ep.store}　${ep.date}</span>
-              <div class="c-amber-line"></div>
-            </div>
+            <div class="c-foot"><span class="c-store">${ep.store||''}　${d}</span><div class="c-amber-line"></div></div>
           </div>
         </div>
-        ${hasPhoto ? `
-        <div style="margin-top:10px;">
-          <div class="style-row">
-            <span class="style-label" style="font-size:10px;color:var(--gray);">オーバーレイ</span>
-            <div class="style-options">
-              ${['dark:暗め','green:グリーン','bottom:下から','none:なし'].map(s=>{const[v,l]=s.split(':');return`<button class="style-btn${overlayStyle===v?' active':''}" onclick="setStyleAndUpdate('overlay','${v}',this)">${l}</button>`;}).join('')}
-            </div>
-          </div>
-          <div class="style-row" style="margin-top:6px;">
-            <span class="style-label" style="font-size:10px;color:var(--gray);">文字色</span>
-            <div class="style-options">
-              ${['white:白','cream:クリーム'].map(s=>{const[v,l]=s.split(':');return`<button class="style-btn${textStyle===v?' active':''}" onclick="setStyleAndUpdate('text','${v}',this)">${l}</button>`;}).join('')}
-            </div>
-          </div>
-        </div>` : ''}
+        ${hasPhoto?`<div class="style-row"><span class="style-label" style="font-size:10px">オーバーレイ</span><div class="style-options">
+          ${['dark:暗め','green:グリーン','bottom:下から','none:なし'].map(s=>{const[v,l]=s.split(':');return'<button class="style-btn'+(overlayStyle===v?' active':'')+'" onclick="setStyleCard(\'overlay\',\''+v+'\',this)">'+l+'</button>';}).join('')}
+        </div></div>
+        <div class="style-row"><span class="style-label" style="font-size:10px">文字色</span><div class="style-options">
+          ${['white:白','cream:クリーム'].map(s=>{const[v,l]=s.split(':');return'<button class="style-btn'+(textStyle===v?' active':'')+'" onclick="setStyleCard(\'text\',\''+v+'\',this)">'+l+'</button>';}).join('')}
+        </div></div>`:''}
       </div>
       <div class="insta-controls">
-        <div class="ctrl-section">
-          <div class="ctrl-title">キャプション文</div>
-          <div class="caption-box" id="captionBox">${caption}</div>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('captionBox').textContent).then(()=>alert('コピーしました！'))">キャプションをコピー</button>
+        <div style="margin-bottom:12px"><div class="ctrl-title">キャプション文</div>
+          <div class="caption-box" id="captionBox">${caption||''}</div>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('captionBox').textContent).then(()=>alert('コピーしました'))">コピー</button>
         </div>
-        <div class="ctrl-section">
-          <div class="ctrl-title">推奨ハッシュタグ</div>
-          <div class="caption-box" id="hashBox">#つなぐ珈琲 #ほっこり #秋田カフェ #スペシャルティコーヒー #秋田珈琲 #コーヒースタンド #秋田 #珈琲</div>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('hashBox').textContent).then(()=>alert('コピーしました！'))">タグをコピー</button>
+        <div><div class="ctrl-title">推奨ハッシュタグ</div>
+          <div class="caption-box" id="hashBox">#つなぐ珈琲 #ほっこり #秋田カフェ #スペシャルティコーヒー #秋田珈琲 #コーヒースタンド #秋田</div>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('hashBox').textContent).then(()=>alert('コピーしました'))">コピー</button>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-function setStyleAndUpdate(type, val, btn) {
-  if (type === 'overlay') {
-    overlayStyle = val;
-    document.querySelectorAll('.style-btn').forEach(b => { if (['暗め','グリーン','下から','なし'].some(l=>b.textContent===l)) b.classList.remove('active'); });
-  } else {
-    textStyle = val;
-    document.querySelectorAll('.style-btn').forEach(b => { if (['白','クリーム'].some(l=>b.textContent===l)) b.classList.remove('active'); });
-  }
+function setStyleCard(type, val, btn) {
+  if (type === 'overlay') overlayStyle = val;
+  else textStyle = val;
+  btn.closest('.style-options').querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   updateCardPreview();
 }
 
 function renderNewspaper(data) {
   const today = new Date();
-  const subCols = (data.subs || []).slice(0,3).map(s=>`
-    <div class="np-col">
-      <div class="np-col-title">${s.title}</div>
-      <div class="np-col-body">${s.body}</div>
-      <div class="np-col-store">${s.store}</div>
-    </div>
-  `).join('');
-
+  const subCols = (data.subs||[]).slice(0,3).map(s=>`
+    <div class="np-col"><div class="np-col-title">${s.title}</div><div class="np-col-body">${s.body}</div><div class="np-col-store">${s.store}</div></div>`).join('');
   document.getElementById('newspaperOutput').innerHTML = `
     <div class="newspaper">
-      <div class="np-header">
-        <div class="np-title">ほっこり通信</div>
-        <div class="np-sub">つなぐ珈琲 / つなぎ手たちの物語</div>
-      </div>
-      <div class="np-meta">
-        <span>${today.getFullYear()}年${today.getMonth()+1}月</span>
-        <span>大曲・秋田市・横手</span>
-        <span>無料配布</span>
-      </div>
+      <div class="np-header"><div class="np-title">ほっこり通信</div><div class="np-sub">つなぐ珈琲 / つなぎ手たちの物語</div></div>
+      <div class="np-meta"><span>${today.getFullYear()}年${today.getMonth()+1}月</span><span>大曲・秋田市・横手</span><span>無料配布</span></div>
       <div class="np-main">
         <div class="np-label">今週のほっこり</div>
         <div class="np-main-title">${data.main.title}</div>
@@ -578,66 +613,95 @@ function renderNewspaper(data) {
         <div class="np-body">${data.main.body}</div>
         <div class="np-store-note">${data.main.store}</div>
       </div>
-      ${subCols ? `<div class="np-cols">${subCols}</div>` : ''}
-      <div class="np-footer">
-        <span>つなぐ珈琲 / ほっこり通信</span>
-        <span>${today.getFullYear()}年${today.getMonth()+1}月発行</span>
-      </div>
+      ${subCols?'<div class="np-cols">'+subCols+'</div>':''}
+      <div class="np-footer"><span>つなぐ珈琲 / ほっこり通信</span><span>${today.getFullYear()}年${today.getMonth()+1}月発行</span></div>
     </div>
-    <button class="copy-btn" style="margin-top:12px" onclick="copyNp()">本文テキストをコピー</button>
-  `;
+    <button class="copy-btn" style="margin-top:12px" onclick="copyNp()">本文テキストをコピー</button>`;
 }
 
 function copyNp() {
-  const els = document.querySelectorAll('.np-main-title, .np-body, .np-col-title, .np-col-body');
-  const text = Array.from(els).map(e=>e.textContent).join('\n\n');
-  navigator.clipboard.writeText(text).then(()=>alert('コピーしました！'));
+  const els = document.querySelectorAll('.np-main-title,.np-body,.np-col-title,.np-col-body');
+  navigator.clipboard.writeText(Array.from(els).map(e=>e.textContent).join('\n\n')).then(()=>alert('コピーしました'));
 }
 
-async function loadEpisodes() {
-  const list = document.getElementById('episodesList');
-  list.innerHTML = '<div style="padding:16px;font-size:12px;color:#888;">読み込み中...</div>';
-  try {
-    const res = await fetch(
-      SUPABASE_URL + '/rest/v1/brew_diary?order=created_at.desc&limit=20',
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
-    );
-    if (!res.ok) throw new Error('取得失敗: ' + res.status);
-    const rows = await res.json();
-    if (!Array.isArray(rows) || rows.length === 0) {
-      list.innerHTML = '<div style="padding:16px;font-size:12px;color:#888;">エピソードが見つかりませんでした</div>';
-      return;
-    }
-    const sample = rows[0];
-    console.log('カラム一覧:', Object.keys(sample));
-    console.log('サンプルデータ:', JSON.stringify(sample, null, 2));
-    alert('カラム一覧: ' + Object.keys(sample).join(', '));
-    const textKey = ['episode', 'content', 'text', 'body', 'memo', 'note', 'description']
-      .find(k => sample[k] !== undefined)
-      || Object.keys(sample).find(k => typeof sample[k] === 'string' && (sample[k] || '').length > 10)
-      || 'episode';
-    const storeKey = ['store', 'store_name', 'shop', 'location']
-      .find(k => sample[k] !== undefined) || null;
-    const dateKey = ['created_at', 'date', 'recorded_at', 'timestamp']
-      .find(k => sample[k] !== undefined) || 'created_at';
-    const idKey = ['id', 'uuid'].find(k => sample[k] !== undefined) || 'id';
+// ===== 分析 =====
+function selectStore(store, btn) {
+  currentStore = store;
+  document.querySelectorAll('.store-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateStats();
+  document.getElementById('analysisResult').innerHTML = '<div class="analysis-placeholder">分析ボタンを押してください</div>';
+}
 
-    EPISODES = rows.map(r => ({
-      id: r[idKey],
-      store: storeKey ? (r[storeKey] || '—') : '—',
-      date: r[dateKey] ? String(r[dateKey]).slice(0, 10).replace(/-/g, '.') : '—',
-      text: r[textKey] || '',
-    })).filter(e => e.text.length > 0);
+function getFilteredData() {
+  if (currentStore === 'all') return EPISODES;
+  return EPISODES.filter(r => (r.store||'').includes(currentStore));
+}
 
-    renderEpisodes();
-    updateUI();
-  } catch(e) {
-    list.innerHTML = '<div style="padding:16px;font-size:12px;color:#c00;">読み込み失敗: ' + e.message + '</div>';
-    console.error(e);
+function updateStats() {
+  const data = getFilteredData();
+  const days = new Set(data.map(r => r.date || (r.created_at||'').slice(0,10))).size;
+  const staffs = new Set(data.map(r => r.staff).filter(Boolean)).size;
+  document.getElementById('statTotal').textContent = data.length;
+  document.getElementById('statDays').textContent = days;
+  document.getElementById('statStaff').textContent = staffs;
+}
+
+async function analyze(type) {
+  const data = getFilteredData();
+  if (data.length === 0) {
+    document.getElementById('analysisResult').textContent = 'エピソードがありません';
+    return;
   }
+
+  document.getElementById('analysisLoading').style.display = 'flex';
+  document.getElementById('analysisResult').innerHTML = '';
+
+  const storeLabel = currentStore === 'all' ? '全店舗' : currentStore + '店';
+  const eps = data.slice(0, 30).map(r =>
+    `[${r.date||''} ${r.store||''} ${r.staff||''}] ${r.episode}${r.achievement?' / よかった:'+r.achievement:''}`
+  ).join('\n');
+
+  const prompts = {
+    tendency: `つなぐ珈琲（秋田県の住所非公開コーヒースタンド）の${storeLabel}のエピソードを分析してください。
+お客様の傾向・特徴・よく来る時間帯・行動パターンなどを読み取り、わかりやすくまとめてください。
+ですます調で、つなぎ手（スタッフ）が読んで参考になる形で書いてください。
+
+【エピソード】
+${eps}`,
+
+    advice: `つなぐ珈琲（秋田県の住所非公開コーヒースタンド）の${storeLabel}のエピソードをもとに、
+つなぎ手（スタッフ）への具体的な接客アドバイスを3〜5つ提案してください。
+エピソードの内容に基づいた具体的なアドバイスで、すぐ実践できる内容にしてください。ですます調で。
+
+【エピソード】
+${eps}`,
+
+    highlight: `以下のエピソードの中から「今週のほっこり」として一番紹介したい1つを選び、
+選んだ理由と、Instagram投稿用の短文（60字以内）を添えてください。ですます調で。
+
+【エピソード】
+${eps}`
+  };
+
+  const loadingTexts = { tendency: 'お客様の傾向を分析中...', advice: '接客アドバイスを生成中...', highlight: '今週のほっこりを選んでいます...' };
+  document.getElementById('analysisLoadingText').textContent = loadingTexts[type];
+
+  try {
+    const res = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompts[type]}] })
+    });
+    if (!res.ok) throw new Error('API error: ' + res.status);
+    const result = await res.json();
+    document.getElementById('analysisResult').textContent = result.content[0].text;
+  } catch(e) {
+    document.getElementById('analysisResult').textContent = '分析失敗: ' + e.message;
+  }
+  document.getElementById('analysisLoading').style.display = 'none';
 }
 
-loadEpisodes();
+loadData();
 </script>
 </body>
 </html>

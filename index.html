@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -16,71 +15,71 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Noto Sans JP',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
 
-header { background:var(–green); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
-header .title { font-family:‘Zen Old Mincho’,serif; color:white; font-size:15px; letter-spacing:0.12em; }
-header .sub { font-size:10px; color:var(–amber); letter-spacing:0.1em; margin-top:2px; }
-header .reload-btn { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; padding:6px 14px; font-size:11px; cursor:pointer; font-family:‘Zen Old Mincho’,serif; letter-spacing:0.06em; }
+header { background:var(--green); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
+header .title { font-family:'Zen Old Mincho',serif; color:white; font-size:15px; letter-spacing:0.12em; }
+header .sub { font-size:10px; color:var(--amber); letter-spacing:0.1em; margin-top:2px; }
+header .reload-btn { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; padding:6px 14px; font-size:11px; cursor:pointer; font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; }
 header .reload-btn:hover { background:rgba(255,255,255,0.25); }
 
 /* タブ */
-.main-tabs { display:flex; background:var(–green); padding:0 24px; border-top:1px solid rgba(255,255,255,0.1); }
-.main-tab { padding:10px 20px; font-family:‘Zen Old Mincho’,serif; font-size:12px; color:rgba(255,255,255,0.55); cursor:pointer; border-bottom:2px solid transparent; letter-spacing:0.08em; transition:all 0.2s; }
+.main-tabs { display:flex; background:var(--green); padding:0 24px; border-top:1px solid rgba(255,255,255,0.1); }
+.main-tab { padding:10px 20px; font-family:'Zen Old Mincho',serif; font-size:12px; color:rgba(255,255,255,0.55); cursor:pointer; border-bottom:2px solid transparent; letter-spacing:0.08em; transition:all 0.2s; }
 .main-tab:hover { color:rgba(255,255,255,0.8); }
-.main-tab.active { color:var(–amber); border-bottom-color:var(–amber); }
+.main-tab.active { color:var(--amber); border-bottom-color:var(--amber); }
 
 .container { max-width:1000px; margin:0 auto; padding:24px 20px; }
 .tab-content { display:none; }
 .tab-content.active { display:block; }
 
 /* カード共通 */
-.card { background:white; border:1px solid var(–border); border-radius:3px; margin-bottom:16px; overflow:hidden; }
-.card-header { background:var(–green); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; }
-.card-header h2 { font-family:‘Zen Old Mincho’,serif; font-size:12px; color:white; font-weight:400; letter-spacing:0.1em; }
+.card { background:white; border:1px solid var(--border); border-radius:3px; margin-bottom:16px; overflow:hidden; }
+.card-header { background:var(--green); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; }
+.card-header h2 { font-family:'Zen Old Mincho',serif; font-size:12px; color:white; font-weight:400; letter-spacing:0.1em; }
 .card-body { padding:16px; }
 
 /* ローディング */
-.loading-msg { padding:20px; font-size:12px; color:var(–gray); font-family:‘Zen Old Mincho’,serif; text-align:center; }
-.error-msg { padding:16px; font-size:12px; color:var(–red); }
+.loading-msg { padding:20px; font-size:12px; color:var(--gray); font-family:'Zen Old Mincho',serif; text-align:center; }
+.error-msg { padding:16px; font-size:12px; color:var(--red); }
 
 /* ===== デイリータブ ===== */
 .date-group { margin-bottom:20px; }
-.date-label { font-family:‘Zen Old Mincho’,serif; font-size:12px; color:var(–green); font-weight:700; letter-spacing:0.1em; padding:6px 0; border-bottom:1px solid var(–green-light); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.date-count { font-size:10px; color:var(–amber); font-weight:400; }
+.date-label { font-family:'Zen Old Mincho',serif; font-size:12px; color:var(--green); font-weight:700; letter-spacing:0.1em; padding:6px 0; border-bottom:1px solid var(--green-light); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.date-count { font-size:10px; color:var(--amber); font-weight:400; }
 
-.ep-row { border:1px solid #e8e0d0; border-radius:3px; padding:12px 14px; margin-bottom:8px; background:var(–cream); display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; align-items:start; }
-.ep-row:hover { border-color:var(–green-mid); }
+.ep-row { border:1px solid #e8e0d0; border-radius:3px; padding:12px 14px; margin-bottom:8px; background:var(--cream); display:grid; grid-template-columns:80px 1fr 1fr; gap:12px; align-items:start; }
+.ep-row:hover { border-color:var(--green-mid); }
 .ep-meta { display:flex; flex-direction:column; gap:4px; }
-.ep-store-badge { font-size:9px; color:white; background:var(–green-mid); padding:2px 7px; border-radius:2px; letter-spacing:0.06em; font-family:‘Zen Old Mincho’,serif; display:inline-block; }
-.ep-staff { font-size:10px; color:var(–gray); font-family:‘Zen Old Mincho’,serif; margin-top:2px; }
-.ep-episode { font-family:‘Zen Old Mincho’,serif; font-size:11.5px; line-height:1.9; color:var(–text); }
-.ep-sub { font-size:10.5px; color:var(–gray); line-height:1.8; }
-.ep-sub .sub-label { color:var(–amber); font-size:9px; letter-spacing:0.06em; margin-bottom:2px; }
+.ep-store-badge { font-size:9px; color:white; background:var(--green-mid); padding:2px 7px; border-radius:2px; letter-spacing:0.06em; font-family:'Zen Old Mincho',serif; display:inline-block; }
+.ep-staff { font-size:10px; color:var(--gray); font-family:'Zen Old Mincho',serif; margin-top:2px; }
+.ep-episode { font-family:'Zen Old Mincho',serif; font-size:11.5px; line-height:1.9; color:var(--text); }
+.ep-sub { font-size:10.5px; color:var(--gray); line-height:1.8; }
+.ep-sub .sub-label { color:var(--amber); font-size:9px; letter-spacing:0.06em; margin-bottom:2px; }
 
 /* ===== コンテンツ生成タブ ===== */
 .episodes-list { display:flex; flex-direction:column; gap:8px; }
-.episode-card { border:1px solid #e0d8cc; border-radius:3px; padding:10px 12px; background:var(–cream); cursor:pointer; transition:border-color 0.2s; display:flex; gap:10px; align-items:flex-start; }
-.episode-card:hover { border-color:var(–green-mid); }
-.episode-card.selected { border-color:var(–green); background:var(–green-light); }
-.ep-check { width:15px; height:15px; border:1.5px solid var(–border); border-radius:2px; flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; font-size:9px; color:white; background:white; transition:all 0.2s; }
-.episode-card.selected .ep-check { background:var(–green); border-color:var(–green); }
+.episode-card { border:1px solid #e0d8cc; border-radius:3px; padding:10px 12px; background:var(--cream); cursor:pointer; transition:border-color 0.2s; display:flex; gap:10px; align-items:flex-start; }
+.episode-card:hover { border-color:var(--green-mid); }
+.episode-card.selected { border-color:var(--green); background:var(--green-light); }
+.ep-check { width:15px; height:15px; border:1.5px solid var(--border); border-radius:2px; flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; font-size:9px; color:white; background:white; transition:all 0.2s; }
+.episode-card.selected .ep-check { background:var(--green); border-color:var(--green); }
 .ep-content { flex:1; }
 .ep-meta2 { display:flex; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
-.ep-store2 { font-size:10px; color:var(–amber); letter-spacing:0.08em; font-family:‘Zen Old Mincho’,serif; }
-.ep-date2 { font-size:10px; color:var(–gray); }
-.ep-text2 { font-family:‘Zen Old Mincho’,serif; font-size:11.5px; line-height:1.85; color:var(–text); }
+.ep-store2 { font-size:10px; color:var(--amber); letter-spacing:0.08em; font-family:'Zen Old Mincho',serif; }
+.ep-date2 { font-size:10px; color:var(--gray); }
+.ep-text2 { font-family:'Zen Old Mincho',serif; font-size:11.5px; line-height:1.85; color:var(--text); }
 
 .generate-area { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
-.btn { padding:10px 20px; border:none; cursor:pointer; font-family:‘Zen Old Mincho’,serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; }
-.btn-amber { background:var(–amber); color:white; }
+.btn { padding:10px 20px; border:none; cursor:pointer; font-family:'Zen Old Mincho',serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; }
+.btn-amber { background:var(--amber); color:white; }
 .btn-amber:hover { background:#a36a1a; }
-.btn-green { background:var(–green); color:white; }
+.btn-green { background:var(--green); color:white; }
 .btn-green:hover { background:#122e21; }
 .btn:disabled { opacity:0.35; cursor:not-allowed; }
-.hint { font-size:11px; color:var(–gray); font-family:‘Zen Old Mincho’,serif; }
+.hint { font-size:11px; color:var(--gray); font-family:'Zen Old Mincho',serif; }
 
 /* 写真アップロード */
-.photo-upload-area { border:2px dashed var(–border); border-radius:4px; padding:20px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
-.photo-upload-area:hover { border-color:var(–green-mid); background:var(–green-light); }
+.photo-upload-area { border:2px dashed var(--border); border-radius:4px; padding:20px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
+.photo-upload-area:hover { border-color:var(--green-mid); background:var(--green-light); }
 .photo-upload-area input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
 .photo-preview-wrap { position:relative; }
 .photo-preview { width:100%; max-height:180px; object-fit:cover; border-radius:3px; display:block; }
@@ -88,7 +87,7 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
 
 /* Instagram card */
 .insta-output { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start; }
-.insta-card-wrap { position:relative; width:260px; height:260px; flex-shrink:0; overflow:hidden; border-radius:3px; border:1px solid var(–border); background:var(–cream); }
+.insta-card-wrap { position:relative; width:260px; height:260px; flex-shrink:0; overflow:hidden; border-radius:3px; border:1px solid var(--border); background:var(--cream); }
 .card-bg { position:absolute; inset:0; background-size:cover; background-position:center; }
 .card-overlay { position:absolute; inset:0; display:flex; flex-direction:column; padding:18px 16px 14px; }
 .overlay-dark .card-overlay { background:rgba(0,0,0,0.42); }
@@ -99,80 +98,79 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
 .text-white .c-rule { background:rgba(193,127,36,0.8); }
 .text-white .c-amber-line { background:rgba(193,127,36,0.8); }
 .text-cream .c-brand,.text-cream .c-tag,.text-cream .c-ep,.text-cream .c-store { color:#f0ebe3; }
-.no-photo .card-overlay { background:var(–cream); }
-.no-photo .c-brand { color:var(–green); }
-.no-photo .c-tag { color:var(–amber); }
-.no-photo .c-ep { color:var(–text); }
-.no-photo .c-store { color:var(–gray); }
-.no-photo .c-rule { background:var(–border); }
+.no-photo .card-overlay { background:var(--cream); }
+.no-photo .c-brand { color:var(--green); }
+.no-photo .c-tag { color:var(--amber); }
+.no-photo .c-ep { color:var(--text); }
+.no-photo .c-store { color:var(--gray); }
+.no-photo .c-rule { background:var(--border); }
 .c-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
-.c-brand { font-family:‘Zen Old Mincho’,serif; font-size:9px; letter-spacing:0.14em; }
-.c-tag { font-family:‘Zen Old Mincho’,serif; font-size:8px; letter-spacing:0.1em; }
-.c-rule { height:0.5px; background:var(–border); margin-bottom:10px; }
-.c-ep { font-family:‘Zen Old Mincho’,serif; font-size:11px; line-height:2.1; letter-spacing:0.04em; flex:1; }
+.c-brand { font-family:'Zen Old Mincho',serif; font-size:9px; letter-spacing:0.14em; }
+.c-tag { font-family:'Zen Old Mincho',serif; font-size:8px; letter-spacing:0.1em; }
+.c-rule { height:0.5px; background:var(--border); margin-bottom:10px; }
+.c-ep { font-family:'Zen Old Mincho',serif; font-size:11px; line-height:2.1; letter-spacing:0.04em; flex:1; }
 .c-foot { display:flex; justify-content:space-between; align-items:flex-end; margin-top:6px; }
-.c-store { font-family:‘Zen Old Mincho’,serif; font-size:7px; letter-spacing:0.06em; opacity:0.8; }
-.c-amber-line { width:14px; height:1.5px; background:var(–amber); }
+.c-store { font-family:'Zen Old Mincho',serif; font-size:7px; letter-spacing:0.06em; opacity:0.8; }
+.c-amber-line { width:14px; height:1.5px; background:var(--amber); }
 
 .insta-controls { flex:1; min-width:200px; }
-.ctrl-title { font-size:11px; color:var(–green); font-family:‘Zen Old Mincho’,serif; letter-spacing:0.06em; margin-bottom:6px; border-bottom:0.5px solid var(–border); padding-bottom:3px; }
-.caption-box { background:var(–cream); border:1px solid var(–border); padding:10px 12px; font-size:11.5px; line-height:1.9; color:var(–text); white-space:pre-wrap; font-family:‘Zen Old Mincho’,serif; letter-spacing:0.03em; min-height:70px; }
-.copy-btn { margin-top:7px; padding:6px 13px; background:var(–green-light); border:1px solid var(–green-mid); color:var(–green); font-size:10px; cursor:pointer; font-family:‘Zen Old Mincho’,serif; letter-spacing:0.06em; transition:all 0.2s; display:inline-block; }
-.copy-btn:hover { background:var(–green); color:white; }
+.ctrl-title { font-size:11px; color:var(--green); font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; margin-bottom:6px; border-bottom:0.5px solid var(--border); padding-bottom:3px; }
+.caption-box { background:var(--cream); border:1px solid var(--border); padding:10px 12px; font-size:11.5px; line-height:1.9; color:var(--text); white-space:pre-wrap; font-family:'Zen Old Mincho',serif; letter-spacing:0.03em; min-height:70px; }
+.copy-btn { margin-top:7px; padding:6px 13px; background:var(--green-light); border:1px solid var(--green-mid); color:var(--green); font-size:10px; cursor:pointer; font-family:'Zen Old Mincho',serif; letter-spacing:0.06em; transition:all 0.2s; display:inline-block; }
+.copy-btn:hover { background:var(--green); color:white; }
 .style-row { display:flex; gap:10px; align-items:center; margin:8px 0 4px; flex-wrap:wrap; }
-.style-label { font-size:10px; color:var(–gray); min-width:55px; }
+.style-label { font-size:10px; color:var(--gray); min-width:55px; }
 .style-options { display:flex; gap:5px; flex-wrap:wrap; }
-.style-btn { padding:4px 10px; border:1px solid var(–border); background:white; font-family:‘Zen Old Mincho’,serif; font-size:10px; cursor:pointer; color:var(–gray); transition:all 0.15s; border-radius:2px; }
-.style-btn.active { background:var(–green); color:white; border-color:var(–green); }
+.style-btn { padding:4px 10px; border:1px solid var(--border); background:white; font-family:'Zen Old Mincho',serif; font-size:10px; cursor:pointer; color:var(--gray); transition:all 0.15s; border-radius:2px; }
+.style-btn.active { background:var(--green); color:white; border-color:var(--green); }
 
 /* 新聞 */
-.newspaper { font-family:‘Zen Old Mincho’,serif; border:1px solid var(–border); background:var(–cream); padding:20px; }
-.np-header { text-align:center; border-bottom:2.5px solid var(–green); padding-bottom:7px; margin-bottom:5px; }
-.np-title { font-size:20px; font-weight:700; color:var(–green); letter-spacing:0.18em; }
-.np-sub { font-size:9px; color:var(–gray); letter-spacing:0.1em; margin-top:2px; }
-.np-meta { display:flex; justify-content:space-between; font-size:9px; color:#aaa; border-bottom:0.5px solid var(–border); padding-bottom:4px; margin-bottom:12px; }
-.np-main { border-bottom:1px solid var(–border); padding-bottom:12px; margin-bottom:12px; }
-.np-label { font-size:8px; color:var(–amber); letter-spacing:0.14em; margin-bottom:3px; }
-.np-main-title { font-size:15px; font-weight:700; color:var(–text); line-height:1.7; margin-bottom:7px; }
-.np-rule { width:18px; height:1.5px; background:var(–amber); margin-bottom:8px; }
-.np-body { font-size:11px; line-height:2.1; color:var(–text); }
-.np-store-note { font-size:8px; color:var(–gray); margin-top:4px; }
-.np-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-bottom:0.5px solid var(–border); padding-bottom:12px; margin-bottom:12px; }
-.np-col { padding:0 10px; border-right:0.5px solid var(–border); }
+.newspaper { font-family:'Zen Old Mincho',serif; border:1px solid var(--border); background:var(--cream); padding:20px; }
+.np-header { text-align:center; border-bottom:2.5px solid var(--green); padding-bottom:7px; margin-bottom:5px; }
+.np-title { font-size:20px; font-weight:700; color:var(--green); letter-spacing:0.18em; }
+.np-sub { font-size:9px; color:var(--gray); letter-spacing:0.1em; margin-top:2px; }
+.np-meta { display:flex; justify-content:space-between; font-size:9px; color:#aaa; border-bottom:0.5px solid var(--border); padding-bottom:4px; margin-bottom:12px; }
+.np-main { border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:12px; }
+.np-label { font-size:8px; color:var(--amber); letter-spacing:0.14em; margin-bottom:3px; }
+.np-main-title { font-size:15px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:7px; }
+.np-rule { width:18px; height:1.5px; background:var(--amber); margin-bottom:8px; }
+.np-body { font-size:11px; line-height:2.1; color:var(--text); }
+.np-store-note { font-size:8px; color:var(--gray); margin-top:4px; }
+.np-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-bottom:0.5px solid var(--border); padding-bottom:12px; margin-bottom:12px; }
+.np-col { padding:0 10px; border-right:0.5px solid var(--border); }
 .np-col:first-child { padding-left:0; }
 .np-col:last-child { border-right:none; padding-right:0; }
-.np-col-title { font-size:11px; font-weight:700; color:var(–green); line-height:1.6; margin-bottom:5px; }
-.np-col-body { font-size:10px; line-height:2.0; color:var(–text); }
+.np-col-title { font-size:11px; font-weight:700; color:var(--green); line-height:1.6; margin-bottom:5px; }
+.np-col-body { font-size:10px; line-height:2.0; color:var(--text); }
 .np-col-store { font-size:8px; color:#aaa; margin-top:4px; }
-.np-footer { display:flex; justify-content:space-between; border-top:1px solid var(–green); padding-top:6px; font-size:9px; color:var(–gray); }
+.np-footer { display:flex; justify-content:space-between; border-top:1px solid var(--green); padding-top:6px; font-size:9px; color:var(--gray); }
 
 /* ===== 分析タブ ===== */
 .store-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
-.store-tab { padding:7px 16px; border:1px solid var(–border); background:white; font-family:‘Zen Old Mincho’,serif; font-size:11px; cursor:pointer; color:var(–gray); transition:all 0.2s; border-radius:2px; }
-.store-tab.active { background:var(–green); color:white; border-color:var(–green); }
+.store-tab { padding:7px 16px; border:1px solid var(--border); background:white; font-family:'Zen Old Mincho',serif; font-size:11px; cursor:pointer; color:var(--gray); transition:all 0.2s; border-radius:2px; }
+.store-tab.active { background:var(--green); color:white; border-color:var(--green); }
 
-.analysis-result { background:var(–cream); border:1px solid var(–border); padding:16px; font-family:‘Zen Old Mincho’,serif; font-size:12px; line-height:2; color:var(–text); min-height:100px; white-space:pre-wrap; }
-.analysis-placeholder { color:var(–gray); font-size:12px; padding:20px; text-align:center; }
+.analysis-result { background:var(--cream); border:1px solid var(--border); padding:16px; font-family:'Zen Old Mincho',serif; font-size:12px; line-height:2; color:var(--text); min-height:100px; white-space:pre-wrap; }
+.analysis-placeholder { color:var(--gray); font-size:12px; padding:20px; text-align:center; }
 
-.analyze-btn { padding:10px 22px; background:var(–blue); color:white; border:none; cursor:pointer; font-family:‘Zen Old Mincho’,serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; margin-right:8px; }
+.analyze-btn { padding:10px 22px; background:var(--blue); color:white; border:none; cursor:pointer; font-family:'Zen Old Mincho',serif; font-size:12px; letter-spacing:0.1em; transition:all 0.2s; margin-right:8px; }
 .analyze-btn:hover { background:#1a5276; }
 .analyze-btn:disabled { opacity:0.4; cursor:not-allowed; }
 
 .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
-.stat-card { background:white; border:1px solid var(–border); padding:12px 14px; text-align:center; }
-.stat-num { font-size:22px; font-weight:700; color:var(–green); font-family:‘Zen Old Mincho’,serif; }
-.stat-label { font-size:10px; color:var(–gray); margin-top:3px; }
+.stat-card { background:white; border:1px solid var(--border); padding:12px 14px; text-align:center; }
+.stat-num { font-size:22px; font-weight:700; color:var(--green); font-family:'Zen Old Mincho',serif; }
+.stat-label { font-size:10px; color:var(--gray); margin-top:3px; }
 
-.loading { display:flex; align-items:center; gap:8px; padding:16px; color:var(–gray); font-size:12px; font-family:‘Zen Old Mincho’,serif; }
-.spinner { width:15px; height:15px; border:2px solid var(–green-light); border-top-color:var(–green); border-radius:50%; animation:spin 0.8s linear infinite; flex-shrink:0; }
+.loading { display:flex; align-items:center; gap:8px; padding:16px; color:var(--gray); font-size:12px; font-family:'Zen Old Mincho',serif; }
+.spinner { width:15px; height:15px; border:2px solid var(--green-light); border-top-color:var(--green); border-radius:50%; animation:spin 0.8s linear infinite; flex-shrink:0; }
 @keyframes spin { to { transform:rotate(360deg); } }
 
 .output-tabs { display:flex; }
-.out-tab { padding:8px 18px; font-family:‘Zen Old Mincho’,serif; font-size:11px; letter-spacing:0.08em; cursor:pointer; border:1px solid var(–border); background:#eee; color:var(–gray); transition:all 0.2s; }
-.out-tab.active { background:white; color:var(–green); border-bottom-color:white; font-weight:700; }
-.output-content { background:white; border:1px solid var(–border); border-top:none; padding:20px; }
+.out-tab { padding:8px 18px; font-family:'Zen Old Mincho',serif; font-size:11px; letter-spacing:0.08em; cursor:pointer; border:1px solid var(--border); background:#eee; color:var(--gray); transition:all 0.2s; }
+.out-tab.active { background:white; color:var(--green); border-bottom-color:white; font-weight:700; }
+.output-content { background:white; border:1px solid var(--border); border-top:none; padding:20px; }
 </style>
-
 </head>
 <body>
 
@@ -193,7 +191,6 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
 <div class="container">
 
   <!-- ===== デイリータブ ===== -->
-
   <div id="tab-daily" class="tab-content active">
     <div class="card">
       <div class="card-header">
@@ -207,7 +204,6 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
   </div>
 
   <!-- ===== コンテンツ生成タブ ===== -->
-
   <div id="tab-content" class="tab-content">
     <div class="card">
       <div class="card-header">
@@ -219,63 +215,59 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
       </div>
     </div>
 
-```
-<div class="card">
-  <div class="card-header"><h2>② 写真を選ぶ（Instagram用・任意）</h2></div>
-  <div class="card-body">
-    <div id="uploadArea" class="photo-upload-area">
-      <input type="file" accept="image/*" onchange="handlePhoto(event)">
-      <div style="font-size:24px;margin-bottom:5px;">📷</div>
-      <div style="font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--gray);">写真をタップして選択</div>
-    </div>
-    <div id="photoPreview" style="display:none">
-      <div class="photo-preview-wrap">
-        <img id="previewImg" class="photo-preview">
-        <button class="photo-remove" onclick="removePhoto()">✕</button>
-      </div>
-      <div class="style-row">
-        <span class="style-label">オーバーレイ</span>
-        <div class="style-options">
-          <button class="style-btn active" onclick="setStyle('overlay','dark',this)">暗め</button>
-          <button class="style-btn" onclick="setStyle('overlay','green',this)">グリーン</button>
-          <button class="style-btn" onclick="setStyle('overlay','bottom',this)">下から</button>
-          <button class="style-btn" onclick="setStyle('overlay','none',this)">なし</button>
+    <div class="card">
+      <div class="card-header"><h2>② 写真を選ぶ（Instagram用・任意）</h2></div>
+      <div class="card-body">
+        <div id="uploadArea" class="photo-upload-area">
+          <input type="file" accept="image/*" onchange="handlePhoto(event)">
+          <div style="font-size:24px;margin-bottom:5px;">📷</div>
+          <div style="font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--gray);">写真をタップして選択</div>
+        </div>
+        <div id="photoPreview" style="display:none">
+          <div class="photo-preview-wrap">
+            <img id="previewImg" class="photo-preview">
+            <button class="photo-remove" onclick="removePhoto()">✕</button>
+          </div>
+          <div class="style-row">
+            <span class="style-label">オーバーレイ</span>
+            <div class="style-options">
+              <button class="style-btn active" onclick="setStyle('overlay','dark',this)">暗め</button>
+              <button class="style-btn" onclick="setStyle('overlay','green',this)">グリーン</button>
+              <button class="style-btn" onclick="setStyle('overlay','bottom',this)">下から</button>
+              <button class="style-btn" onclick="setStyle('overlay','none',this)">なし</button>
+            </div>
+          </div>
+          <div class="style-row">
+            <span class="style-label">文字色</span>
+            <div class="style-options">
+              <button class="style-btn active" onclick="setStyle('text','white',this)">白</button>
+              <button class="style-btn" onclick="setStyle('text','cream',this)">クリーム</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="style-row">
-        <span class="style-label">文字色</span>
-        <div class="style-options">
-          <button class="style-btn active" onclick="setStyle('text','white',this)">白</button>
-          <button class="style-btn" onclick="setStyle('text','cream',this)">クリーム</button>
-        </div>
+    </div>
+
+    <div class="generate-area">
+      <button class="btn btn-amber" id="btnInsta" onclick="generate('instagram')" disabled>📷 Instagram投稿を生成</button>
+      <button class="btn btn-green" id="btnNews" onclick="generate('newspaper')" disabled>📰 ほっこり通信を生成</button>
+      <span class="hint" id="hintText">エピソードを選択してください</span>
+    </div>
+
+    <div id="outputSection" style="display:none">
+      <div class="output-tabs">
+        <div class="out-tab active" id="outTabInsta" onclick="switchOut('instagram')">Instagram</div>
+        <div class="out-tab" id="outTabNews" onclick="switchOut('newspaper')">ほっこり通信</div>
+      </div>
+      <div class="output-content">
+        <div id="genLoading" class="loading" style="display:none"><div class="spinner"></div><span id="genLoadingText">生成中...</span></div>
+        <div id="instagramOutput" style="display:none"></div>
+        <div id="newspaperOutput" style="display:none"></div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="generate-area">
-  <button class="btn btn-amber" id="btnInsta" onclick="generate('instagram')" disabled>📷 Instagram投稿を生成</button>
-  <button class="btn btn-green" id="btnNews" onclick="generate('newspaper')" disabled>📰 ほっこり通信を生成</button>
-  <span class="hint" id="hintText">エピソードを選択してください</span>
-</div>
-
-<div id="outputSection" style="display:none">
-  <div class="output-tabs">
-    <div class="out-tab active" id="outTabInsta" onclick="switchOut('instagram')">Instagram</div>
-    <div class="out-tab" id="outTabNews" onclick="switchOut('newspaper')">ほっこり通信</div>
-  </div>
-  <div class="output-content">
-    <div id="genLoading" class="loading" style="display:none"><div class="spinner"></div><span id="genLoadingText">生成中...</span></div>
-    <div id="instagramOutput" style="display:none"></div>
-    <div id="newspaperOutput" style="display:none"></div>
-  </div>
-</div>
-```
-
   </div>
 
   <!-- ===== 分析タブ ===== -->
-
   <div id="tab-analysis" class="tab-content">
     <div class="card">
       <div class="card-header"><h2>店舗を選ぶ</h2></div>
@@ -294,23 +286,20 @@ header .reload-btn:hover { background:rgba(255,255,255,0.25); }
       </div>
     </div>
 
-```
-<div class="card">
-  <div class="card-header"><h2>AIアドバイス</h2></div>
-  <div class="card-body">
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <button class="analyze-btn" id="btnTendency" onclick="analyze('tendency')">お客様の傾向を分析</button>
-      <button class="analyze-btn" id="btnAdvice" onclick="analyze('advice')">接客アドバイスを生成</button>
-      <button class="analyze-btn" id="btnHighlight" onclick="analyze('highlight')">今週のほっこりを選ぶ</button>
+    <div class="card">
+      <div class="card-header"><h2>AIアドバイス</h2></div>
+      <div class="card-body">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="analyze-btn" id="btnTendency" onclick="analyze('tendency')">お客様の傾向を分析</button>
+          <button class="analyze-btn" id="btnAdvice" onclick="analyze('advice')">接客アドバイスを生成</button>
+          <button class="analyze-btn" id="btnHighlight" onclick="analyze('highlight')">今週のほっこりを選ぶ</button>
+        </div>
+        <div id="analysisLoading" class="loading" style="display:none"><div class="spinner"></div><span id="analysisLoadingText">分析中...</span></div>
+        <div id="analysisResult" class="analysis-result">
+          <div class="analysis-placeholder">店舗を選んで分析ボタンを押してください</div>
+        </div>
+      </div>
     </div>
-    <div id="analysisLoading" class="loading" style="display:none"><div class="spinner"></div><span id="analysisLoadingText">分析中...</span></div>
-    <div id="analysisResult" class="analysis-result">
-      <div class="analysis-placeholder">店舗を選んで分析ボタンを押してください</div>
-    </div>
-  </div>
-</div>
-```
-
   </div>
 
 </div>
@@ -517,10 +506,32 @@ async function generate(type) {
 
   try {
     if (type === 'instagram') {
-      const prompt = `つなぐ珈琲（秋田県）のライターです。スタッフのエピソードをInstagram投稿用に書き換えてください。
-ルール：ですます調／個人特定情報なし／情景と感情を含む／カード用60字以内\\nで改行／キャプション180〜220字ハッシュタグなし
-JSON形式のみ：{"card":"テキスト","caption":"文章"}
-店舗:${ep.store} スタッフ:${ep.staff||'—'} 日付:${ep.date||''}
+      const prompt = `あなたはつなぐ珈琲（秋田県の住所非公開コーヒースタンド）のライターです。
+スタッフが書いたエピソードをInstagram投稿用の温かい文章に書き換えてください。
+
+【絶対に守るルール - 個人情報の完全除去】
+- スタッフの名前は絶対に書かない（全て削除）
+- お客様の名前は絶対に書かない
+- 年齢の記述は削除（「50代」「20代」なども削除）
+- 性別の記述は削除（「女性」「男性」「彼女」「彼」も削除）
+- 職業・勤務先・出身地・方言の特定は削除
+- 代わりに「お客様」「来てくれた方」「常連の方」などを使う
+
+【文章スタイル】
+- ですます調で書く
+- 小説の一場面のように情景・空気感・つなぎ手の感情を描写する
+- 「〜でした」「〜ていきました」「〜と思いました」など余韻のある語尾を使う
+- カード用：50〜60文字以内、改行は\\nで2〜3回入れる
+- キャプション：180〜220文字、ハッシュタグなし
+
+【文章の参考例】
+カード：「雪がちらつく午後、\\nコートのまま飛び込んで\\nきた方がいました。\\n珈琲が、人を運ぶ。」
+キャプション：「閉店10分前、駆け込んできた方がいました。息を整えながら「間に合ってよかった」と言って、ゆっくりラテを飲んでいきました。急いで来てくれたことが、じんわり嬉しかったです。また明日も開けようと思いました。」
+
+必ずJSON形式のみ返す（説明文・マークダウン記号は不要）：
+{"card":"カード用テキスト","caption":"キャプション文"}
+
+店舗:${ep.store} 日付:${ep.date||''}
 エピソード:${ep.episode}
 ${ep.achievement?'よかったこと:'+ep.achievement:''}`;
 
@@ -543,19 +554,28 @@ ${ep.achievement?'よかったこと:'+ep.achievement:''}`;
       const prompt = `あなたはつなぐ珈琲（秋田県の住所非公開コーヒースタンド）の編集者です。
 スタッフが書いたエピソードから「ほっこり通信」の記事を作成してください。
 
-【個人情報の扱い】
-- 人名（スタッフ名・お客様の名前・サブスク会員名など）は必ず削除
-- 年齢・性別の明示的な記述は削除
-- 個人を特定できる情報はすべて削除または一般化する
-- 情景・状況・感情は残してよい
+【絶対に守るルール - 個人情報の完全除去】
+- スタッフの名前は絶対に書かない（全て削除）
+- お客様の名前は絶対に書かない
+- 年齢の記述は削除（「50代」なども削除）
+- 性別の記述は削除（「女性」「男性」「彼女」「彼」も削除）
+- 職業・勤務先・出身地は削除
+- 代わりに「お客様」「来てくれた方」「常連の方」などを使う
 
-【文章ルール】
-- ですます調
-- メイン記事：最も印象的なエピソードを130〜160文字で小説風に
+【文章スタイル】
+- ですます調で書く
+- 小説の一場面のように、その場の情景・空気感・つなぎ手の感情を描写する
+- 「〜でした」「〜ていきました」「〜と思いました」など余韻のある語尾を使う
+- メイン記事：最も印象的なエピソードを130〜160文字で
 - サブ記事：残りのエピソードを各55〜75文字で
-- 情景が浮かぶ描写とスタッフの感情を含める
 
-JSON形式のみ返す：{"main":{"title":"20字以内のタイトル","body":"本文","store":"店舗と日付"},"subs":[{"title":"タイトル","body":"本文","store":"店舗と日付"}]}
+【文章の参考例】
+「小さな手が、豆の袋をぎゅっとつかんでいました。「いいにおいがする」お父さんと一緒に選んだエチオピアを、大切そうに抱えて帰っていきました。その顔が、ずっと忘れられないです。」
+
+この例のように、情景とつなぎ手の感情がひと続きで流れる文章にしてください。
+
+必ずJSON形式のみ返す（説明文・マークダウン記号は不要）：
+{"main":{"title":"20字以内のタイトル","body":"本文","store":"店舗と日付"},"subs":[{"title":"タイトル","body":"本文","store":"店舗と日付"}]}
 
 ${texts}`;
 
@@ -733,6 +753,5 @@ ${eps}`
 
 loadData();
 </script>
-
 </body>
 </html>

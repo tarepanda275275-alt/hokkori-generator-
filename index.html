@@ -540,16 +540,29 @@ ${ep.achievement?'よかったこと:'+ep.achievement:''}`;
       }, 3, 'genLoadingText');
       if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
-      const match = data.content[0].text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error('JSON取得失敗');
-      const parsed = JSON.parse(match[0]);
+      const rawText = data.content[0].text;
+      const match = rawText.match(/\{[\s\S]*?\}/);
+      if (!match) throw new Error('JSON取得失敗: ' + rawText.slice(0,100));
+      let parsed;
+      try {
+        parsed = JSON.parse(match[0]);
+      } catch(parseErr) {
+        // 改行エスケープを修正して再試行
+        const fixed = match[0].replace(/\n/g, '\\n').replace(/[\u0000-\u001F]/g, ' ');
+        parsed = JSON.parse(fixed);
+      }
       generatedCard = parsed.card || '';
       renderInstagram(ep, parsed.card, parsed.caption);
 
     } else {
-      const texts = selected.map((e,i) =>
-        `エピソード${i+1}（${e.store} / ${e.date||''} / ${e.staff||''}）:\n${e.episode}${e.achievement?'\nよかった:'+e.achievement:''}`
-      ).join('\n\n');
+      // 選択されたエピソードをログで確認
+      console.log('選択エピソード数:', selected.length, selected.map(e => e.id));
+      const texts = selected.map((e,i) => {
+        const epText = e.episode || '';
+        const achText = e.achievement || '';
+        return `エピソード${i+1}（${e.store||''}店 / ${e.date||''}）:\n${epText}${achText?'\nよかったこと:'+achText:''}`;
+      }).join('\n\n');
+      console.log('送信テキスト:', texts.slice(0,200));
       const prompt = `【最重要ルール - 必ず守ること】
 以下の情報は絶対に文章に入れてはいけません：
 1. 人の名前（スタッフ名・お客様名・すべて）
@@ -590,9 +603,18 @@ ${texts}`;
       }, 3, 'genLoadingText');
       if (!res.ok) throw new Error('API error: ' + res.status);
       const data = await res.json();
-      const match = data.content[0].text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error('JSON取得失敗');
-      renderNewspaper(JSON.parse(match[0]));
+      const rawText2 = data.content[0].text;
+      console.log('Groq応答:', rawText2.slice(0,300));
+      const match2 = rawText2.match(/\{[\s\S]*\}/);
+      if (!match2) throw new Error('JSON取得失敗: ' + rawText2.slice(0,200));
+      let parsed2;
+      try {
+        parsed2 = JSON.parse(match2[0]);
+      } catch(e2) {
+        const fixed2 = match2[0].replace(/([^\\])\n/g, '$1 ').replace(/[\u0000-\u001F]/g, ' ');
+        parsed2 = JSON.parse(fixed2);
+      }
+      renderNewspaper(parsed2);
     }
   } catch(e) {
     document.getElementById('genLoading').style.display = 'none';

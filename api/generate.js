@@ -7,11 +7,19 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { messages, max_tokens } = req.body;
-    const userMessage = messages.find(m => m.role === 'user');
-    const prompt = typeof userMessage.content === 'string'
-      ? userMessage.content
-      : userMessage.content.map(c => c.text || '').join('');
+    const body = req.body;
+    const messages = body.messages || [];
+    const max_tokens = body.max_tokens || 1000;
+
+    // メッセージからテキストを抽出
+    const formattedMessages = messages.map(m => ({
+      role: m.role === 'user' ? 'user' : 'assistant',
+      content: typeof m.content === 'string'
+        ? m.content
+        : Array.isArray(m.content)
+          ? m.content.map(c => c.text || c.content || '').join('')
+          : String(m.content)
+    }));
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -21,8 +29,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: max_tokens || 1000,
+        messages: formattedMessages,
+        max_tokens: max_tokens,
         temperature: 0.7,
       })
     });
@@ -30,7 +38,8 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: data.error?.message || 'Groq API error' });
+      const errMsg = data.error?.message || JSON.stringify(data);
+      return res.status(response.status).json({ error: errMsg });
     }
 
     const text = data.choices?.[0]?.message?.content || '';
